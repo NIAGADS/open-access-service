@@ -7,7 +7,7 @@ Use the format `<type>/<short-description>` with lowercase, hyphen-separated des
 - `feature/` — New functionality or capabilities.
 - `refactor/` — Internal restructuring without changing external behavior.
 - `fix/` — Bug fixes or corrections to existing behavior.
-- `patch/` — Small, targeted maintenance changes that are not bug fixes.
+- `patch/` — Small, targeted maintenance changes or database patches that are not bug fixes.
 - `docs/` — Documentation-only changes.
 - `test/` — Adding or improving tests without changing functionality.
 - `chore/` — Routine maintenance, dependencies, tooling, or configuration.
