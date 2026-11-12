@@ -1,8 +1,34 @@
-# AI & Copilot Code Change Policy
+# AI Agent Code Change Policy
 
-## Branch Naming Conventions
+## 1. Repository Context
 
-Use the format `<type>/<short-description>` with lowercase, hyphen-separated descriptions.
+### Project Overview
+
+`open-access-service` is a Python monorepo of packages, utilities, and services supporting NIAGADS genomics projects. It uses the [Polylith architecture](https://polylith.gitbook.io/polylith), with reusable components, service bases, and deployable projects, managed with [Poetry](https://python-poetry.org/) and the [Python Polylith toolkit](https://davidvujic.github.io/python-polylith-docs/).
+
+### Key Directories
+
+- `components/niagads/` — Reusable modules, including `utils`, `database`, and `csv_parser`.
+- `bases/niagads/` — Service entry points and tools.
+- `bases/niagads/genomicsdb_service/etl/plugins/` — GenomicsDB ETL plugins (path listed in the existing project guidance; verify against the repository).
+- `projects/` — Applications, schema managers, and API services.
+- `development/` — Experimental and test code.
+- `developer-notes/` — Project development notes.
+
+### Architecture and Integration
+
+- Bases provide service entry points; components are reusable Polylith bricks.
+- Manage external dependencies through Poetry in `pyproject.toml` (`[tool.poetry.dependencies]`).
+- Project scripts are encapsulated classes, following patterns such as `bases/niagads/sql_runner/core.py`, and inherit from `ComponentBaseMixin`.
+- `ComponentBaseMixin` initializes component loggers.
+- See `components/niagads/utils/` for utility patterns and `projects/` for integration examples.
+- For ETL plugin guidance, consult `bases/niagads/genomicsdb_etl/README.md` and example plugins in `bases/niagads/genomicsdb_etl/plugins/`.
+
+## 2. Git and Workspace Rules
+
+### Branch Naming
+
+Use `<type>/<short-description>` with a lowercase, hyphen-separated description:
 
 - `feature/` — New functionality or capabilities.
 - `refactor/` — Internal restructuring without changing external behavior.
@@ -18,162 +44,97 @@ Use the format `<type>/<short-description>` with lowercase, hyphen-separated des
 
 Choose the prefix based on the purpose of the change, not its size. Follow existing repository conventions when applicable.
 
-## Workspace location
+### Workspace and Worktrees
 
 - Keep all task work inside the current project workspace.
-- When separate Git worktrees are requested, create them under
-  `<repository-root>/.worktrees/<task-name>`.
-- Never place worktrees in /tmp or outside the workspace.
+- When separate Git worktrees are requested, create them under `<repository-root>/.worktrees/<task-name>`.
+- Never place worktrees in `/tmp` or outside the workspace.
 - Preserve the original checkout and all local changes.
-- If the required location is blocked or cannot be safely ignored,
-  ask before choosing another location.
-
-## Token and usage budget
-
-- Keep work within the requested scope. Avoid repeated file reads,
-  broad searches, redundant checks, and verbose tool output.
-- Read only relevant files and sections. Reuse information already
-  gathered unless changes require another read.
-- Do not launch subagents unless explicitly requested.
-- Run targeted checks first. Repeat checks only after relevant changes
-  or when investigating a failure.
-- Keep progress updates and final reports concise.
-
-### Usage limits and pausing
-
-- Do not invent remaining token counts, usage percentages, or reset times.
-  Use usage information only when explicitly available from the platform
-  or supplied by the user.
-- If an explicit usage warning appears, finish the current small,
-  coherent step when possible, then checkpoint and stop.
-- If a usage limit blocks progress, do not repeatedly retry or switch
-  models to bypass it.
-- Before stopping, record in CHECKPOINT.md:
-  - Completed work and changed files.
-  - Checks run and their results.
-  - Remaining work and the exact next step.
-  - Any known usage reset time.
-- Resume from that checkpoint when the user returns after the reset.
-
-## Build system
-
-- This Python Monorepo is implemented using the Polylith Architecture, managed using poetry
-
-## Test environment
-
-- In local environemnts, environment variables are usually in `../.env`, relative to the repository root.
-- Load that file into the test process without displaying its values.
-- Run tests only when explicitly requested.
-
-## Code Change Requirements
-
-- All code changes must strictly follow Python and PEP8 coding and line length conventions and requirements in this file.
-- Any deviation from these rules should be considered a bug and corrected immediately.
-- AI-generated code must be reviewed for formatting, style, and logical placement before submission.
-
-## Implementation Checklist
-
-- Avoid redundant code and helper functions that unnecessarily wrap single lines of code
-- Before adding code, search for and reuse existing project utilities, components, and Pydantic models that fit the task.
-- Always review and match project conventions, formatting, and style.
-- Place imports, constants, and docstrings in logical order.
-- Avoid duplicate imports and code blocks.
-- Use idiomatic Python and PEP8 formatting.
-- Use Pydantic 2+ where the project’s existing design or the request calls for it. Do not replace established Pydantic models with dictionaries or duplicate validation.
-- Add extra blank spaces between large code blocks for readability.
-- Never take credit for user changes.
-- Only alter comments if either requested or necessary for documenting core code modifications, additions, etc.
-- Do not do inline imports unless necessary to avoid circular imports in the package.
-- Avoid nested function defintions unless absolutely necessary.
-- Ensure docstrings and comments are concise, relevant, and professional—focused on what the function does and why, not its visibility or trivial details.
-- Do not invent fallback defaults that hide missing, invalid, or failed data. Follow the project’s established error-handling behavior.
-- Implement only the requested behavior. Do not add abstractions or support for unrequested use cases.
-- Before creating a class or adding class behavior, inspect nearby code and search the project for relevant base classes and mixins. Reuse applicable project mixins, combining them with ComponentBaseMixin as required. Create a new mixin only when the behavior is reusable across multiple classes and no existing mixin provides it; otherwise keep the behavior in the class. Don’t duplicate behavior already provided by a mixin.
-
-## Performance Considerations
-
-- Add checks and defensive handling only for conditions that can occur in the requested use case or are required by the project.  Too many unneccessary checks can slow down.  My code deals with Enterprise Scale data.
-- Avoid repeated iterations over data structures when the work can be done in one pass or with an existing project utility.
-- Consider parallelization for iterations over large data.
-
-## Additional Requirements
-
-- Always use python best practices when inserting new code.
-- Review codebase (files in same or parent folder, or all files in context) when implementing new files to keep conventions, style, and big picture of the project instead of writing generic code solutions.
-- Pay attention to formatting, making sure that new code is not necessarily inserted at current cursor but where it logically flows in the existing files.
-- Do not lecture; just focus on explicit tasks/requests. Only make suggestions when asked directly
-- Always aske for clarification when there are multiple paths that need to be evaluated or context is unclear.
-- If project instructions, configuration, and existing code patterns conflict, follow the explicit instruction or configuration that applies to the task. Don’t copy a nearby pattern that contradicts it.
-- After editing, review the diff and run the relevant focused checks. Report any checks that could not be run.
-
-## Project Overview
-
-- **open-access-service** is a monorepo of Python packages, utilities, and services supporting NIAGADS genomics projects.
-- Uses the [Polylith architecture](https://polylith.gitbook.io/polylith) for modularity; bricks (components, bases, projects) are organized in subfolders.
-- Managed with [Poetry](https://python-poetry.org/) and [Python-polylith toolkit](https://davidvujic.github.io/python-polylith-docs/).
-
-### Key Directories
-
-- `components/niagads/` — Core reusable modules (e.g., `utils`, `database`, `csv_parser`, etc.)
-- `bases/niagads/genomicsdb_service/etl/plugins` - GenomicsDB ETL plugins
-- `bases/niagads/` — Service entry points and tools
-- `projects/` — Example apps, schema managers, API services
-- `development/` — Experimental and test code
-- `deveoper-notes` - development notes
+- If the required location is blocked or cannot be safely ignored, ask before selecting another location.
 
 ### Development Notes
 
-Store development documentation in `developer-notes/`, organized by project.
+Store plans, checkpoints, handoffs, and architectural decisions under `developer-notes/<project>/`. Use `shared/` for cross-project work. Follow the `development-workflow` skill for directory structure, naming, progress tracking, session continuity, and historical integrity. Never overwrite historical checkpoints or handoffs or treat superseded or abandoned requests as current instructions.
 
-- Create one directory per project, using its established repository name.
-- Within each project, use `plans/`, `handoffs/`, and `decisions/` as needed.
-- Use `shared/` for cross-project work and architectural decisions.
-- Use descriptive, lowercase, kebab-case Markdown filenames.
-- Use the same basename for related plans and handoffs.
-- Update existing notes when continuing work rather than creating duplicates.
-- Keep notes concise, documenting decisions, implementation status, unresolved issues, and next steps.
-- Do not create additional directories or save notes elsewhere unless necessary or explicitly instructed.
+## 3. Implementation Requirements
 
-#### Linting
+### Before Making Changes
 
-- respect `black` and `isort` conventions
+- Review relevant nearby code, parent directories, and applicable project components to understand existing architecture, formatting, style, and conventions before implementing new files or behavior.
+- Search for existing utilities, components, Pydantic models, base classes, and mixins. Reuse applicable implementations rather than duplicating functionality.
+- If project instructions, configuration, and existing patterns conflict, follow the explicit instruction or configuration applicable to the task; do not copy a conflicting nearby pattern.
+- Ask for clarification when context is unclear or multiple implementation approaches require a decision.
 
-#### ETL Plugins
+### Scope and Structure
 
-- see `bases/niagads/genomicsdb_etl/README.md` for general plugin implementation guidelines
-- see `bases/niagads/genomicsdb_etl/plugins/` for example plugins
+- Implement only the requested behavior. Do not introduce abstractions, extra use cases, or fallback defaults that conceal missing, invalid, or failed data. Follow established error-handling behavior.
+- Avoid redundant code and helper functions that merely wrap single statements.
+- Avoid duplicate imports and code blocks.
+- Place new code where it logically belongs, not simply at the current cursor position.
+- Keep imports, constants, and docstrings in logical order.
+- Avoid inline imports except where needed to prevent circular imports.
+- Avoid nested function definitions unless necessary.
+- Do not modify comments unless requested or needed to document core code changes.
+- Never take credit for changes made by the user.
 
-#### Coding Conventions
+### Classes, Mixins, and Models
 
-- **Naming:**
-  - Files, directories, functions, variables: `snake_case`
-  - Classes: `UpperCamelCase`
-  - Constants: `UPPER_SNAKE_CASE`
-- **Docstrings:**
-  - Use [Google style](https://google.github.io/styleguide/pyguide.html#docstrings)
-  - Credit all third-party code with source URLs in docstrings
-- **Classes:**
-  - Prefer encapsulation: private (`__var`) and protected (`_var`) members
-  - All classes must inherit from `ComponentBaseMixin` (`components/niagads/common/core.py`), except enums and Pydantic models. When modifying legacy code, add the mixin to any class you touch if doing so is compatible with its existing design. Don’t undertake unrelated migrations solely to add the mixin.
-  - Pydantic models that will be serialized for output and/or tied to either the APIs or logged or converted to SQLAlchemy data models during ETL processing must inherit from `CustomBaseModel` (`components/niagads/common/models/base.py`)
-  - Add **repr** or **str** only when useful and consistent with existing project patterns.
-- **Type Hints:**
-  - Use type hints and `enums` for controlled vocabularies
-- **Enums:**
-  - use `enums` for controlled vocabulary, for string enums, use `CaseInsensitiveEnum` defined in `components/niagads/enums/core.py`
+- Before adding a class or class behavior, inspect nearby code and search for applicable base classes and mixins.
+- Reuse existing project mixins, combining them with `ComponentBaseMixin` as required; do not duplicate behavior already supplied by a mixin.
+- Create a new mixin only when behavior is reusable across multiple classes and no existing mixin provides it. Otherwise, keep the behavior in the class.
+- All classes must inherit from `ComponentBaseMixin` (`components/niagads/common/core.py`). Enums, Pydantic models, SQLAlchemy declarative bases, mapped ORM models (including materialized views), and ORM mixins are exempt. When modifying legacy classes, add the mixin if compatible with their existing design; do not perform unrelated migrations solely to add it.
+- Use Pydantic v2+ when required by the task or existing project design. Do not replace established Pydantic models with dictionaries or duplicate existing validation.
+- Pydantic models used for serialized output, APIs, logging, or conversion to SQLAlchemy data models during ETL must inherit from `CustomBaseModel` (`components/niagads/common/models/base.py`).
+- Preserve SQLAlchemy model inheritance. Do not add `ComponentBaseMixin` when modifying ORM models or ORM mixins; use their existing database bases and applicable ORM mixins.
+- Define `__repr__` or `__str__` only when useful and consistent with existing project patterns.
 
-#### Integration & Patterns
+### Performance
 
-- **External dependencies:** Managed via Poetry in `pyproject.toml` (`[tool.poetry.dependencies]`)
-- **Service boundaries:** Bases provide service entry points; components are reusable bricks
-- **Scripts:** All project scripts are encapsulated classes (e.g., `bases/niagads/sql_runner/core.py`) that inherite from ComponentBaseMixin.
-- **Logging:** ComponentBaseMixin initializes loggers.
+This project handles enterprise-scale data. Account for performance when implementing changes.
 
-#### Examples
+- Add checks and defensive handling only for conditions that can arise in the requested use case or are required by project conventions.
+- Avoid repeated iteration over data structures when a single pass or existing utility suffices.
+- Consider parallelization when iterating over large datasets.
 
-- See `components/niagads/utils/` for utility patterns
-- See `projects/` for integration examples
+## 4. Python Coding Conventions
 
----
+- Follow Python best practices, PEP 8, and the project's established formatting and line-length conventions, including Black and isort.
+- Treat deviations from these requirements as bugs and correct them.
+- Review AI-generated code for style, formatting, logical placement, and correctness before submission.
+- Use additional blank lines between large code blocks where they improve readability.
+- Use `snake_case` for files, directories, functions, and variables; `UpperCamelCase` for classes; and `UPPER_SNAKE_CASE` for constants.
+- Use type hints and enums for controlled vocabularies. For string enums, use `CaseInsensitiveEnum` from `components/niagads/enums/core.py`.
+- Prefer encapsulation using protected (`_var`) and private (`__var`) class members.
+- Write concise, relevant, professional docstrings and comments that explain behavior and rationale, not trivial details or visibility.
+- Use [Google-style docstrings](https://google.github.io/styleguide/pyguide.html#docstrings).
+- Credit third-party code with source URLs in docstrings.
 
-For unclear conventions or missing documentation, ask maintainers for clarification. Update this file as new patterns emerge.
+## 5. Testing and Validation
+
+- In local environments, environment variables are usually in `../.env` relative to the repository root. Load that file into the test process without exposing its values.
+- **Run tests only when explicitly requested.**
+- After editing, review the diff and perform relevant focused non-test checks. Report any checks that could not be run.
+- Run targeted checks first; repeat checks only after relevant changes or when investigating a failure.
+
+## 6. Agent Conduct and Resource Use
+
+### Communication and Scope
+
+- Focus on the explicit task; do not lecture or offer unsolicited suggestions.
+- Keep progress updates and final reports concise.
+- Do not launch subagents unless explicitly requested.
+
+### Efficient Tool Use
+
+- Stay within the requested scope. Avoid repeated file reads, broad searches, redundant checks, and verbose tool output.
+- Read only relevant files or sections, and reuse previously gathered information unless changes require another read.
+
+### Usage Limits and Pausing
+
+- Do not invent remaining token counts, usage percentages, or reset times. Use usage information only when provided by the platform or user.
+- If an explicit usage warning appears, finish the current small, coherent step when possible, then record a checkpoint and stop.
+- If a usage limit blocks progress, do not repeatedly retry or switch models to bypass it.
+- Before stopping, record completed work and changed files, checks and results, remaining work and the exact next step, and any known usage reset time in a checkpoint under `developer-notes/<project>/`, following the `development-workflow` skill.
+- Resume from that checkpoint when the user returns after the reset.
+
+For unclear conventions or missing documentation, ask maintainers for clarification. Update this file as new project patterns emerge.
