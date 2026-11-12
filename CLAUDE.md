@@ -1,15 +1,16 @@
-# Repository navigation
+# Repository Navigation
 
-Read `AGENTS.md` for the repository's working rules before making changes.
-This file supplements those rules with a map of the source tree and search
-guidance. Run the commands below from the `open-access-service` repository root.
+@AGENTS.md
 
-## Polylith layout and Python imports
+`AGENTS.md` defines the authoritative repository-wide development rules, coding standards, exclusions, and workflow requirements. Follow those rules for all development tasks.
 
-This is a Poetry-managed Python monorepo using Polylith's `loose` structure
-and the `niagads` namespace (see `workspace.toml`). Source code is split across
-`bases/niagads/` and `components/niagads/`. There is no root `niagads/` or
-`src/niagads/` source directory.
+This file supplements `AGENTS.md` with repository navigation, source layout, import resolution, and search guidance. It does not override or relax any requirements in `AGENTS.md`.
+
+Run repository commands from the `open-access-service` root unless otherwise specified.
+
+## Polylith Layout and Python Imports
+
+This is a Poetry-managed Python monorepo using Polylith's `loose` structure and the `niagads` namespace (see `workspace.toml`). Source code is split across `bases/niagads/` and `components/niagads/`. There is no root `niagads/` or `src/niagads/` source directory.
 
 | Location | Contents |
 | --- | --- |
@@ -19,9 +20,11 @@ and the `niagads` namespace (see `workspace.toml`). Source code is split across
 | `test/bases/niagads/` | Tests organized by base name. The directory is `test`, singular. |
 | `test/components/niagads/` | Tests organized by component name. |
 | `development/` | Experiments, exploratory scripts, sample data, and manual investigations. |
-| `developer-notes/` | Design notes, plans, patches, and task-specific reference material. |
+| `developer-notes/` | Project-organized plans, checkpoints, handoffs, architectural decisions, and development history. |
 | `docs/` | Deprecated Sphinx documentation; ignore unless explicitly requested. |
 | `.agents/skills/` | Repository-specific agent skills. |
+
+### Import Resolution
 
 Map imports to source paths by checking both source roots:
 
@@ -32,16 +35,13 @@ Map imports to source paths by checking both source roots:
 | `niagads.database.genomicsdb.schema.gene.documents` | `components/niagads/database/genomicsdb/schema/gene/documents.py` |
 | `niagads.common.models.base` | `components/niagads/common/models/base.py` |
 
-An import may also resolve to a package's `__init__.py` or a symbol re-exported
-there. Do not assume the import's last segment is a filename.
+An import may also resolve to a package's `__init__.py` or a symbol re-exported there. Do not assume the import's last segment is a filename.
 
-Each `projects/<name>/pyproject.toml` identifies that project's included bricks
-through `[tool.polylith.bricks]` and `[tool.poetry].packages`. Paths such as
-`../../components` are relative to that project directory. Project directory
-names can use hyphens while Python package names use underscores; for example,
-`projects/open-access-api/` packages `bases/niagads/open_access_api/`.
+Each `projects/<name>/pyproject.toml` identifies that project's included bricks through `[tool.polylith.bricks]` and `[tool.poetry].packages`. Paths such as `../../components` are relative to that project directory.
 
-## Where to look first
+Project directory names can use hyphens while Python package names use underscores. For example, `projects/open-access-api/` packages `bases/niagads/open_access_api/`.
+
+## Where to Look First
 
 | Task | Starting location |
 | --- | --- |
@@ -59,17 +59,16 @@ names can use hyphens while Python package names use underscores; for example,
 | General utilities | `components/niagads/utils/` |
 | Packaging and API container configuration | `projects/open-access-api/` |
 
-Other bases include `pipeline_service`, `sql_runner`, and
-`metadata_validator_tool`. Other projects include `genomicsdb-loader`,
-`metadata-builder`, `niagads-metadata-validator`, `variant-annotator`, and
-`examples`. Verify names on disk rather than guessing from an older document.
-In particular, the current ETL base is `genomicsdb_etl`, not
-`genomicsdb_service`.
+Other bases include `pipeline_service`, `sql_runner`, and `metadata_validator_tool`.
 
-## Search and indexing guidance
+Other projects include `genomicsdb-loader`, `metadata-builder`, `niagads-metadata-validator`, `variant-annotator`, and `examples`.
 
-Use explicit filesystem searches when an index or symbol lookup returns no
-results. An empty indexed result does not establish that code is missing.
+Verify names on disk rather than guessing from an older document. In particular, the current ETL base is `genomicsdb_etl`, not `genomicsdb_service`.
+
+## Search and Indexing Guidance
+
+Use explicit filesystem searches when an index or symbol lookup returns no results. An empty indexed result does not establish that code is missing.
+
 Start with the relevant subtree and broaden only as needed:
 
 ```bash
@@ -89,22 +88,71 @@ rg --files projects -g pyproject.toml
 rg --files --hidden .agents .codex -g '*.md'
 ```
 
-`rg` normally respects ignore files and skips hidden directories. If a specific
-expected file is absent, inspect its parent directory and applicable ignore
-rules (`git check-ignore -v <path>`). Use a targeted `rg --files --hidden` or
-`rg --files --no-ignore <specific-directory>` when needed; avoid an unrestricted
-repository-wide search through ignored content.
+### Search Restrictions
 
-Keep source searches out of `.git/`, `.venv/`, nested project virtual
-environments, `__pycache__/`, caches, and `dist/`. Wheels and source archives
-under project `dist/` directories are build artifacts, even where tracked;
-edit the corresponding base or component instead. Inspect these artifacts only
-when the task concerns packaging. Do not scan environment or credential files
-for general indexing or display their values.
+`rg` normally respects ignore files and skips hidden directories. If a specific expected file is absent, inspect its parent directory and applicable ignore rules (`git check-ignore -v <path>`).
 
-Refactor branches intentionally contain incomplete migrations and legacy code.
-Follow the implementation relevant to the task; a stale path in notes or an
-unrelated broken import is not authorization to repair other modules. Consult
-`TODO.md`, `ASK_NIAGADS_HANDOFF.md`, or relevant developer notes when the task
-calls for their context. Run tests only when explicitly requested, as required
-by `AGENTS.md`.
+Use a targeted `rg --files --hidden` or `rg --files --no-ignore <specific-directory>` when needed. Avoid unrestricted repository-wide searches through ignored content.
+
+Keep source searches out of:
+
+- `.git/`
+- `.venv/` and nested project virtual environments
+- `__pycache__/`
+- Caches
+- `dist/`
+
+Wheels and source archives under project `dist/` directories are build artifacts, even where tracked. Edit the corresponding base or component instead. Inspect these artifacts only when the task concerns packaging.
+
+Do not scan environment or credential files for general indexing or display their values.
+
+## Task Scope and Existing Code
+
+Refactor branches may intentionally contain incomplete migrations and legacy code.
+
+- Follow the implementation relevant to the current task.
+- A stale path in notes or an unrelated broken import is not authorization to repair other modules.
+- Do not interpret incomplete migrations or legacy code as permission to expand the requested scope.
+- Follow the applicable implementation and code-change requirements in `AGENTS.md`.
+
+## Development Workflow and Session Continuity
+
+Use `developer-notes/<project>/` for project-specific development documentation.
+
+Follow the `development-workflow` skill in `.agents/skills/development-workflow/` for plans, checkpoints, handoffs, architectural decisions, and progress tracking.
+
+### Starting or Resuming Work
+
+When a task requires existing development context:
+
+1. Identify the relevant project and task.
+2. Consult the project's progress index and latest relevant checkpoint or handoff.
+3. Review the applicable implementation plan and architectural decisions when needed.
+4. Verify recorded progress against the current codebase.
+5. Identify discrepancies between historical records and current instructions before proceeding.
+
+Historical notes are context, not active instructions.
+
+- Do not automatically resume abandoned, superseded, or unrelated work.
+- Do not treat unfinished action items from previous sessions as authorization to implement them.
+- Follow current user instructions and the authoritative repository rules.
+- Preserve historical checkpoints and handoffs according to the `development-workflow` skill.
+
+Consult legacy documents such as `TODO.md` or `ASK_NIAGADS_HANDOFF.md` when relevant, but do not treat their unfinished items as current requirements.
+
+### Progress Documentation
+
+- Store new plans, checkpoints, handoffs, and decisions in the appropriate project directory under `developer-notes/`.
+- Follow the `development-workflow` skill for document naming, timestamps, progress indexes, and historical preservation.
+- Do not replace historical handoffs or checkpoints with rewritten summaries.
+- Distinguish completed work, current implementation state, unresolved issues, and proposed next steps.
+- Avoid unnecessary documentation for trivial changes.
+
+## Testing and Validation
+
+Follow the testing and validation requirements in `AGENTS.md`.
+
+- Run tests only when explicitly requested.
+- Do not interpret the existence of a test suite as authorization to execute it.
+- Follow repository requirements for reviewing code changes and reporting validation results.
+- Do not claim tests or validation were performed unless they actually ran.
