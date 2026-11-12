@@ -1,10 +1,28 @@
 # AI & Copilot Code Change Policy
 
+## Branch Naming Conventions
+
+Use the format `<type>/<short-description>` with lowercase, hyphen-separated descriptions.
+
+- `feature/` — New functionality or capabilities.
+- `refactor/` — Internal restructuring without changing external behavior.
+- `fix/` — Bug fixes or corrections to existing behavior.
+- `patch/` — Small, targeted maintenance changes that are not bug fixes.
+- `docs/` — Documentation-only changes.
+- `test/` — Adding or improving tests without changing functionality.
+- `chore/` — Routine maintenance, dependencies, tooling, or configuration.
+- `perf/` — Performance optimizations without intended behavioral changes.
+- `ci/` — CI/CD workflows and automation.
+- `build/` — Build systems, packaging, and distribution.
+- `hotfix/` — Urgent fixes to production or release branches.
+
+Choose the prefix based on the purpose of the change, not its size. Follow existing repository conventions when applicable.
+
 ## Workspace location
 
 - Keep all task work inside the current project workspace.
 - When separate Git worktrees are requested, create them under
-  <repository-root>/.worktrees/<task-name>.
+  `<repository-root>/.worktrees/<task-name>`.
 - Never place worktrees in /tmp or outside the workspace.
 - Preserve the original checkout and all local changes.
 - If the required location is blocked or cannot be safely ignored,
@@ -43,7 +61,7 @@
 
 ## Test environment
 
-- Environment variables are usually in `../.env`, relative to the repository root.
+- In local environemnts, environment variables are usually in `../.env`, relative to the repository root.
 - Load that file into the test process without displaying its values.
 - Run tests only when explicitly requested.
 
@@ -88,26 +106,35 @@
 - If project instructions, configuration, and existing code patterns conflict, follow the explicit instruction or configuration that applies to the task. Don’t copy a nearby pattern that contradicts it.
 - After editing, review the diff and run the relevant focused checks. Report any checks that could not be run.
 
-# Copilot Instructions for open-access-service
-
 ## Project Overview
 
 - **open-access-service** is a monorepo of Python packages, utilities, and services supporting NIAGADS genomics projects.
 - Uses the [Polylith architecture](https://polylith.gitbook.io/polylith) for modularity; bricks (components, bases, projects) are organized in subfolders.
 - Managed with [Poetry](https://python-poetry.org/) and [Python-polylith toolkit](https://davidvujic.github.io/python-polylith-docs/).
 
-## Key Directories
+### Key Directories
 
 - `components/niagads/` — Core reusable modules (e.g., `utils`, `database`, `csv_parser`, etc.)
 - `bases/niagads/genomicsdb_service/etl/plugins` - GenomicsDB ETL plugins
 - `bases/niagads/` — Service entry points and tools
 - `projects/` — Example apps, schema managers, API services
 - `development/` — Experimental and test code
-- `docs/` — Sphinx documentation (deprecated / ignore)
+- `deveoper-notes` - development notes
 
-## Developer Workflows
+### Development Notes
 
-### Linting
+Store development documentation in `developer-notes/`, organized by project.
+
+- Create one directory per project, using its established repository name.
+- Within each project, use `plans/`, `handoffs/`, and `decisions/` as needed.
+- Use `shared/` for cross-project work and architectural decisions.
+- Use descriptive, lowercase, kebab-case Markdown filenames.
+- Use the same basename for related plans and handoffs.
+- Update existing notes when continuing work rather than creating duplicates.
+- Keep notes concise, documenting decisions, implementation status, unresolved issues, and next steps.
+- Do not create additional directories or save notes elsewhere unless necessary or explicitly instructed.
+
+#### Linting
 
 - respect `black` and `isort` conventions
 
@@ -116,7 +143,7 @@
 - see `bases/niagads/genomicsdb_etl/README.md` for general plugin implementation guidelines
 - see `bases/niagads/genomicsdb_etl/plugins/` for example plugins
 
-## Coding Conventions
+#### Coding Conventions
 
 - **Naming:**
   - Files, directories, functions, variables: `snake_case`
@@ -135,14 +162,14 @@
 - **Enums:**
   - use `enums` for controlled vocabulary, for string enums, use `CaseInsensitiveEnum` defined in `components/niagads/enums/core.py`
 
-## Integration & Patterns
+#### Integration & Patterns
 
 - **External dependencies:** Managed via Poetry in `pyproject.toml` (`[tool.poetry.dependencies]`)
 - **Service boundaries:** Bases provide service entry points; components are reusable bricks
 - **Scripts:** All project scripts are encapsulated classes (e.g., `bases/niagads/sql_runner/core.py`) that inherite from ComponentBaseMixin.
 - **Logging:** ComponentBaseMixin initializes loggers.
 
-## Examples
+#### Examples
 
 - See `components/niagads/utils/` for utility patterns
 - See `projects/` for integration examples
