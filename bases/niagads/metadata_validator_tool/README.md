@@ -1,6 +1,6 @@
 <!-- markdownlint-disable -->
 
-<a href="https://github.com/NIAGADS/niagads-pylib/blob/main/bases/niagads/metadata_validator_tool/core.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/NIAGADS/open-access-service/blob/main/bases/niagads/metadata_validator_tool/core.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 # <kbd>module</kbd> `metadata_validatory_tool/core.py`
 NIAGADS JSON Schema based metadata validation. 
@@ -17,7 +17,7 @@ This tool can be run as a script or can also be imported as a module.  When run 
 
 ---
 
-<a href="https://github.com/NIAGADS/niagads-pylib/blob/main/bases/niagads/metadata_validator_tool/core.py#L50"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/NIAGADS/open-access-service/blob/main/bases/niagads/metadata_validator_tool/core.py#L50"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `get_templated_schema_file`
 
@@ -49,7 +49,7 @@ Verify that templated schema file `{schemaDir}/{vType}.json` exists.
 
 ---
 
-<a href="https://github.com/NIAGADS/niagads-pylib/blob/main/bases/niagads/metadata_validator_tool/core.py#L73"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/NIAGADS/open-access-service/blob/main/bases/niagads/metadata_validator_tool/core.py#L73"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `get_templated_metadata_file`
 
@@ -86,7 +86,7 @@ Find metadata file based on templated name `{prefix}{validator_type}.{ext}`.
 
 ---
 
-<a href="https://github.com/NIAGADS/niagads-pylib/blob/main/bases/niagads/metadata_validator_tool/core.py#L102"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/NIAGADS/open-access-service/blob/main/bases/niagads/metadata_validator_tool/core.py#L102"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `initialize_validator`
 
@@ -128,7 +128,7 @@ Initialize and return a metadata validator.
 
 ---
 
-<a href="https://github.com/NIAGADS/niagads-pylib/blob/main/bases/niagads/metadata_validator_tool/core.py#L140"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/NIAGADS/open-access-service/blob/main/bases/niagads/metadata_validator_tool/core.py#L140"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `run`
 
@@ -167,7 +167,7 @@ Validator initialization fully encapsulated.  Returns validation result.
 
 ---
 
-<a href="https://github.com/NIAGADS/niagads-pylib/blob/main/bases/niagads/metadata_validator_tool/core.py#L171"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/NIAGADS/open-access-service/blob/main/bases/niagads/metadata_validator_tool/core.py#L171"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `main`
 

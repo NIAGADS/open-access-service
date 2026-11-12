@@ -22,7 +22,7 @@ class GenomicsDBSchemaBase(DeclarativeBase):
         Returns:
             list[str]: Unique list of schema names registered in the base.
 
-        Source: AI-generated, see https://github.com/NIAGADS/niagads-pylib
+        Source: AI-generated, see https://github.com/NIAGADS/open-access-service
         """
         schemas = []
         for mapper in cls.registry.mappers:

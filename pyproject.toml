@@ -63,8 +63,8 @@ packages = [
     { include = "niagads/vep_json_parser", from = "components" },
 ]
 
-homepage = "https://github.com/NIAGADS/niagads-pylib"
-repository = "https://github.com/NIAGADS/niagads-pylib"
+homepage = "https://github.com/NIAGADS/open-access-service"
+repository = "https://github.com/NIAGADS/open-access-service"
 
 include = [
     { path = "bases/niagads/genomicsdb_etl/plugins/validation_schemas/*.json" },

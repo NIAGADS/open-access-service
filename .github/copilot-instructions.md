@@ -28,11 +28,11 @@
 - Pay attention to formatting, making sure that new code is not necessarily inserted at current cursor but where it logically flows in the existing files.
 - Do not lecture; just focus on explicit tasks/requests. Only make suggestions when asked directly or when there are multiple paths that need to be evaluated. Provide minimum description unless more information is requested.
 
-# Copilot Instructions for niagads-pylib
+# Copilot Instructions for open-access-service
 
 ## Project Overview
 
-- **niagads-pylib** is a monorepo of Python packages, utilities, and services supporting NIAGADS genomics projects.
+- **open-access-service** is a monorepo of Python packages, utilities, and services supporting NIAGADS genomics projects.
 - Uses the [Polylith architecture](https://polylith.gitbook.io/polylith) for modularity; bricks (components, bases, projects) are organized in subfolders.
 - Managed with [Poetry](https://python-poetry.org/) and [Python-polylith toolkit](https://davidvujic.github.io/python-polylith-docs/).
 

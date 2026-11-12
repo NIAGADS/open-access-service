@@ -27,7 +27,8 @@ implementing and reverting alternatives.
 1. Read the applicable `AGENTS.md` files and task-specific instructions.
 2. Inspect relevant code, tests, configuration, and documentation. For new files, inspect the corresponding package or layer.
 3. Search for existing utilities, components, Pydantic models, base classes, and mixins that apply. Reuse them where appropriate.
-4. Identify the smallest set of files and behaviors needed to satisfy the request.
+4. Preserve context-independent behavior of reusable components, functions, and utilities. If a change requires context-specific behavior, prefer a wrapper, mixin, or subclass rather than modifying shared behavior. Explain the proposed approach and request guidance before implementation.
+5. Identify the smallest set of files and behaviors needed to satisfy the request.
 
 If project instructions, configuration, and code patterns conflict, follow the applicable explicit instruction or configuration over a contradictory example. Do not copy a nearby pattern that conflicts with an explicit requirement.
 
@@ -45,12 +46,13 @@ If project instructions, configuration, and code patterns conflict, follow the a
 - Implement only requested behavior. Do not add abstractions, configuration, compatibility paths, or support for unrequested use cases.
 - Preserve unrelated user changes. Keep edits to comments limited to cases where they are requested or needed to explain a code change.
 - Do not use inline imports unless needed to avoid a circular import.
-- Keep docstrings and comments concise and relevant. Do not add AI attribution or source URLs unless the project requires them.
-- add full googlestyle docstrings to most enums and member or helper/utility functions. type args in the docstrings. do not annotate NotImplemented exceptions in the docstrings. Thing like API routes don't need docstrings. one line wrappers may just need a short descriptive text. don't change existing docstrings unless function was updated/modified.
+- Keep docstrings and comments concise and relevant. Do not add AI attribution or source URLs unless the required as attribution or the project needs them.
+- Add full googlestyle docstrings to most enums and member or helper/utility functions, except for API Routes. Type args in the docstrings. Do not annotate NotImplemented exceptions in the docstrings. Short, 1-3 line wrappers or self-explanatory utils can have short descriptive summary instead of full docstring. Don't change existing docstrings unless function was updated/modified.
 
 ## Classes and mixins
 
 - Ordinary component and service classes must inherit from `ComponentBaseMixin`. Enums, Pydantic models, SQLAlchemy declarative bases, mapped ORM models (including materialized views), and ORM mixins are exempt.
+- Pydantic Models requiring serialization must inherit from `CustomBaseModel`. SQLAlchemy declarative bases, mapped ORM models (including materialized views), and ORM mixins are not Pydantic models and therefore exempt.
 - Preserve SQLAlchemy model inheritance. Do not add `ComponentBaseMixin` when modifying ORM models or ORM mixins; use their existing database bases and applicable ORM mixins.
 - Before creating a class or adding class behavior, inspect nearby code and search the project for relevant base classes and mixins.
 - Reuse applicable project mixins and avoid duplicating behavior they provide.
@@ -60,13 +62,12 @@ If project instructions, configuration, and code patterns conflict, follow the a
 
 ## Project context
 
-- `niagads-pylib` is a Python monorepo using Polylith, Poetry, and the Python-Polylith toolkit.
+- `open-access-service` is a Python monorepo using Polylith, Poetry, and the Python-Polylith toolkit.
 - `components/niagads/` contains reusable components and utilities.
 - `bases/niagads/` contains service entry points and tools.
 - `bases/niagads/genomicsdb_etl/plugins` contains GenomicsDB ETL plugins.
 - `projects/` contains applications and integrations.
-- `development/` contains experimental and test code.
-- `docs/` contains deprecated Sphinx documentation; do not update it unless requested.
+- `development/` contains experimental and test code
 - Keep code in the appropriate Polylith layer. Bases provide service entry points; reusable functionality belongs in components where consistent with project patterns.
 - Manage dependencies through Poetry and the project’s `pyproject.toml`.
 - For ETL plugins, follow `bases/niagads/genomicsdb_etl/plugins/README.md`.

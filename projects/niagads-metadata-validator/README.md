@@ -1,6 +1,6 @@
 <!-- markdownlint-disable -->
 
-<a href="https://github.com/NIAGADS/niagads-pylib/blob/main/bases/niagads/metadata_validator_tool/core.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/NIAGADS/open-access-service/blob/main/bases/niagads/metadata_validator_tool/core.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 # NIAGADS JSON Schema based metadata validation tools
 
@@ -34,11 +34,11 @@ Import package into your python script.
 import niagads.metadata_validator_tool.core as mv_tool
 ```
 
-Use [`mv_tool.initialize_validator`](#function-initialize_validator) to initialize and retrieve a validator object for further manipulation. Use [`mv_tool.run`](#function-run) to initialize and run a validation with default configuration. See [validator documentation](https://github.com/NIAGADS/niagads-pylib/blob/main/components/niagads/metadata_validator/README.md) for more information about validator properties and member functions.
+Use [`mv_tool.initialize_validator`](#function-initialize_validator) to initialize and retrieve a validator object for further manipulation. Use [`mv_tool.run`](#function-run) to initialize and run a validation with default configuration. See [validator documentation](https://github.com/NIAGADS/open-access-service/blob/main/components/niagads/metadata_validator/README.md) for more information about validator properties and member functions.
 
 
 
-Example code, with schema and metadata files are availble in the code repostory:  [examples/niagads-metadata-validator](https://github.com/NIAGADS/niagads-pylib/blob/e58808f2ef2b412e68ef66ff214683783d2f7576/projects/examples/niagads-metadata-validator/example.ipynb).
+Example code, with schema and metadata files are availble in the code repostory:  [examples/niagads-metadata-validator](https://github.com/NIAGADS/open-access-service/blob/e58808f2ef2b412e68ef66ff214683783d2f7576/projects/examples/niagads-metadata-validator/example.ipynb).
 
 ---
 

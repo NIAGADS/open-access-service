@@ -2,7 +2,7 @@
 
 Read `AGENTS.md` for the repository's working rules before making changes.
 This file supplements those rules with a map of the source tree and search
-guidance. Run the commands below from the `niagads-pylib` repository root.
+guidance. Run the commands below from the `open-access-service` repository root.
 
 ## Polylith layout and Python imports
 

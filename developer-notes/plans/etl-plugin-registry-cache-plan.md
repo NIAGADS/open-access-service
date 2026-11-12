@@ -43,9 +43,9 @@ A decorator cannot register a class that has never been imported. Therefore, the
 
 ## Scope of implementation
 
-- Add cache/index management around `register_package_plugins()` in [`components/niagads/etl/utils.py`]( /home/allenem/projects/genomicsdb/niagads-pylib/components/niagads/etl/utils.py:46 ).
+- Add cache/index management around `register_package_plugins()` in [`components/niagads/etl/utils.py`]( /home/allenem/projects/genomicsdb/open-access-service/components/niagads/etl/utils.py:46 ).
 - Keep `PluginRegistry.register()` as the only developer-facing registration mechanism.
-- Add registry-loading methods to [`components/niagads/etl/plugins/registry.py`]( /home/allenem/projects/genomicsdb/niagads-pylib/components/niagads/etl/plugins/registry.py:16 ).
+- Add registry-loading methods to [`components/niagads/etl/plugins/registry.py`]( /home/allenem/projects/genomicsdb/open-access-service/components/niagads/etl/plugins/registry.py:16 ).
 - Add `--refresh-registry` to the plugin runner.
 - Preserve existing behavior and error messages for valid plugins and unresolved plugin names.
 - Keep process-local loaded-package caching even with the persistent index.

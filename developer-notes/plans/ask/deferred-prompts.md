@@ -85,7 +85,7 @@ components rather than bases/niagads/open_access_api/ask, then refactor the agre
 boundaries. This prompt authorizes assessment first; discuss significant moves
 and their consequences before implementing them.
 
-Read AGENTS.md and ASK_NIAGADS_HANDOFF.md in niagads-pylib and the paired
+Read AGENTS.md and ASK_NIAGADS_HANDOFF.md in open-access-service and the paired
 niagads-viz-monorepo. Preserve existing local changes and the current task
 branches. Inspect current code and manifests rather than relying solely on the
 handoff. Do not launch subagents.
@@ -134,7 +134,7 @@ by file moves or import checks alone.
 ## Prompt 006: Ontology-based retrieval for gene documents and tracks
 
 ```text
-Implement ontology-based retrieval for gene documents and tracks in niagads-pylib.
+Implement ontology-based retrieval for gene documents and tracks in open-access-service.
 
 Follow AGENTS.md and applicable project skills. Inspect existing retrieval
 utilities, models, and mixins before implementing. Do not run tests unless

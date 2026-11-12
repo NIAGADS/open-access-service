@@ -65,7 +65,7 @@ LOG_FILE=${FILE}.vep.log
 
 
 if if [[ "$REHEADER" == "true" ]]; then
-    bcftools reheader -h $PROJECT_DIR/niagads-pylib/projects/variant-annotator/data/vcf_header.txt $FILE
+    bcftools reheader -h $PROJECT_DIR/open-access-service/projects/variant-annotator/data/vcf_header.txt $FILE
   else
     cat $FILE
   fi |
@@ -74,7 +74,7 @@ if if [[ "$REHEADER" == "true" ]]; then
   else
     cat
   fi | \
-docker compose --env-file $PROJECT_DIR/niagads-pylib/projects/variant-annotator/.env --file $PROJECT_DIR/niagads-pylib/projects/variant-annotator/docker-compose.yaml \
+docker compose --env-file $PROJECT_DIR/open-access-service/projects/variant-annotator/.env --file $PROJECT_DIR/open-access-service/projects/variant-annotator/docker-compose.yaml \
     run --rm -T -v ${WORKING_DIR}:/working vep \
   vep \
   --input_file stdin \

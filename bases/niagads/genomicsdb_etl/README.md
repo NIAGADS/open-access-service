@@ -418,7 +418,7 @@ export PROJECT_DIR=/path/to/project-root
 export DATA_DIR=/path/to/data
 export CONFIG_DIR=$PROJECT_DIR/ad-genomicsdb-etl-pipeline/pipeline
 export DATABASE_URI=postgresql://<user>:<pwd>@<host>:<port>/<database>
-source $PROJECT_DIR/niagads-pylib/.venv/bin/activate
+source $PROJECT_DIR/open-access-service/.venv/bin/activate
 ```
 
 If `DATABASE_URI` is not set, plugins may also accept `--connection-string` to override it for a single run.

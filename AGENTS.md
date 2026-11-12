@@ -88,11 +88,11 @@
 - If project instructions, configuration, and existing code patterns conflict, follow the explicit instruction or configuration that applies to the task. Don’t copy a nearby pattern that contradicts it.
 - After editing, review the diff and run the relevant focused checks. Report any checks that could not be run.
 
-# Copilot Instructions for niagads-pylib
+# Copilot Instructions for open-access-service
 
 ## Project Overview
 
-- **niagads-pylib** is a monorepo of Python packages, utilities, and services supporting NIAGADS genomics projects.
+- **open-access-service** is a monorepo of Python packages, utilities, and services supporting NIAGADS genomics projects.
 - Uses the [Polylith architecture](https://polylith.gitbook.io/polylith) for modularity; bricks (components, bases, projects) are organized in subfolders.
 - Managed with [Poetry](https://python-poetry.org/) and [Python-polylith toolkit](https://davidvujic.github.io/python-polylith-docs/).
 

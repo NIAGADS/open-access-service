@@ -1,6 +1,6 @@
 <!-- markdownlint-disable -->
 
-<a href="https://github.com/NIAGADS/niagads-pylib/blob/main/components/niagads/csv_triples_parser/core.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/NIAGADS/open-access-service/blob/main/components/niagads/csv_triples_parser/core.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 # <kbd>module</kbd> `core.py`
 
@@ -16,7 +16,7 @@
 
 
 
-<a href="https://github.com/NIAGADS/niagads-pylib/blob/main/components/niagads/csv_triples_parser/core.py#L17"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/NIAGADS/open-access-service/blob/main/components/niagads/csv_triples_parser/core.py#L17"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `__init__`
 
@@ -38,7 +38,7 @@ __init__(
 
 ---
 
-<a href="https://github.com/NIAGADS/niagads-pylib/blob/main/components/niagads/csv_triples_parser/core.py#L50"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/NIAGADS/open-access-service/blob/main/components/niagads/csv_triples_parser/core.py#L50"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `add_owl_class`
 
@@ -62,7 +62,7 @@ create and add a new class node  node is of type OWL.Class  node is subClassOf O
 
 ---
 
-<a href="https://github.com/NIAGADS/niagads-pylib/blob/main/components/niagads/csv_triples_parser/core.py#L42"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/NIAGADS/open-access-service/blob/main/components/niagads/csv_triples_parser/core.py#L42"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `get_defintions`
 
@@ -74,7 +74,7 @@ Return the definition map
 
 ---
 
-<a href="https://github.com/NIAGADS/niagads-pylib/blob/main/components/niagads/csv_triples_parser/core.py#L100"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/NIAGADS/open-access-service/blob/main/components/niagads/csv_triples_parser/core.py#L100"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `parse`
 
@@ -92,7 +92,7 @@ parse the triples file
 
 ---
 
-<a href="https://github.com/NIAGADS/niagads-pylib/blob/main/components/niagads/csv_triples_parser/core.py#L80"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/NIAGADS/open-access-service/blob/main/components/niagads/csv_triples_parser/core.py#L80"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `parse_class_hierarchy_triple`
 
@@ -112,7 +112,7 @@ creates a node each for class, subclass, and term creates the following relation
 
 ---
 
-<a href="https://github.com/NIAGADS/niagads-pylib/blob/main/components/niagads/csv_triples_parser/core.py#L46"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/NIAGADS/open-access-service/blob/main/components/niagads/csv_triples_parser/core.py#L46"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `parse_semantic_triple`
 
@@ -124,7 +124,7 @@ Parse a subject <-> predicate <-> object triple
 
 ---
 
-<a href="https://github.com/NIAGADS/niagads-pylib/blob/main/components/niagads/csv_triples_parser/core.py#L136"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/NIAGADS/open-access-service/blob/main/components/niagads/csv_triples_parser/core.py#L136"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `to_owl`
 
@@ -136,7 +136,7 @@ Convert to owl format; wrapper for `to_xml`, just ensures .owl extension on file
 
 ---
 
-<a href="https://github.com/NIAGADS/niagads-pylib/blob/main/components/niagads/csv_triples_parser/core.py#L119"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/NIAGADS/open-access-service/blob/main/components/niagads/csv_triples_parser/core.py#L119"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `to_ttl`
 
@@ -162,7 +162,7 @@ if `file` is provided, will write the turtle formatted graph to file otherwise r
 
 ---
 
-<a href="https://github.com/NIAGADS/niagads-pylib/blob/main/components/niagads/csv_triples_parser/core.py#L142"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="https://github.com/NIAGADS/open-access-service/blob/main/components/niagads/csv_triples_parser/core.py#L142"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `to_xml`
 

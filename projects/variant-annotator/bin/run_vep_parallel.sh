@@ -5,7 +5,7 @@
 
 # set -e
 
-SCRIPT_DIR=$PROJECT_DIR/niagads-pylib/projects/variant-annotator/bin
+SCRIPT_DIR=$PROJECT_DIR/open-access-service/projects/variant-annotator/bin
 VEP_SCRIPT="${SCRIPT_DIR}/vep.sh"
 
 # Parse arguments

@@ -94,7 +94,6 @@ pass. Four SDK legacy-httpx deprecation warnings remain. No DB, ORM or live-mode
 validation was attempted. Feature-owned region routes/service/ORM changes were
 preserved, not rewritten. Frontend is being merged from app/oa-api separately.
 
-
 ## Development-base integration — 2026-10-21
 
 Merged refactor/api at 2497a296 into codex/ask-context-recovery-retries. Keep base
@@ -187,7 +186,7 @@ The user is running the API on the host. Compaction work remains separate.
 
 ## Error reporting guidance — 2026-10-21
 
-Frontend-only changes in niagads-viz-monorepo: ASK Chat now links help@niagads.org
+Frontend-only changes in niagads-viz-monorepo: ASK Chat now links <help@niagads.org>
 and the existing API GitHub issue tracker, explains that reports should include
 error details and a request reference when present, and exposes the complete
 received error in an expandable details block. FastAPI detail AND message are
@@ -292,7 +291,6 @@ found an explicit-axis mismatch, now fixed; its synthetic regression case was
 removed. Details are recorded in that plan.
 
 ## Prior dashboard checkpoint (v3; superseded)
-
 
 Work is on **codex/ask-dashboard-translators** in both repositories, based on
 Python **refactor/api at ef6d2ba1** and frontend **app/oa-api at c3962e5f**.
@@ -422,7 +420,7 @@ the user's subsequent instructions take precedence for continuation.
 
 | Repository | Task branch | Development base | Latest implementation commit |
 | --- | --- | --- | --- |
-| NIAGADS/niagads-pylib | codex/cloud-environment-setup | refactor/api | c613ea3c |
+| NIAGADS/open-access-service | codex/cloud-environment-setup | refactor/api | c613ea3c |
 | NIAGADS/niagads-viz-monorepo | codex/cloud-environment-setup | app/oa-api | c796e7e8 |
 
 Both task branches are pushed to origin. The Python branch includes refactor/api

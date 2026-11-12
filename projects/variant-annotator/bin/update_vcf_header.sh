@@ -9,7 +9,7 @@ if [[ -z "$1" ]]; then
 fi
 
 dir="$1"
-header="$PROJECT_DIR/niagads-pylib/projects/variant-annotator/data/short_vcf_header.txt"
+header="$PROJECT_DIR/open-access-service/projects/variant-annotator/data/short_vcf_header.txt"
 
 for file in "$dir"/*.vcf; do
     [[ ! -f "$file" ]] && continue

@@ -20,14 +20,14 @@ The main goal of this project is to define and orchestrate containers for:
 
 These services are essential for tools and APIs that implement or depend on GA4GH VRS, enabling consistent and reproducible variant representation.
 
-This project is intended to be used as a dependency by other projects in the `niagads-pylib` monorepo, including:
+This project is intended to be used as a dependency by other projects in the `open-access-service` monorepo, including:
 
 - `genomicsdb-loader`: ETL plugins that require GA4GH standardized variant or sequence identifiers
 - `open-access-api` (TBD)
 
 ## Installation
 
-If you are working within the `niagads-pylib` monorepo, the `variant-annotator` project is already part of the repository. Simply navigate to the project directory:
+If you are working within the `open-access-service` monorepo, the `variant-annotator` project is already part of the repository. Simply navigate to the project directory:
 
 ```bash
 cd projects/variant-annotator
@@ -37,7 +37,7 @@ Alternatively, if you want to use the `variant-annotator` as a standalone projec
 
 ```bash
 git clone <repo-url>
-cd niagads-pylib
+cd open-access-service
 git sparse-checkout init --cone
 git sparse-checkout set projects/variant-annotator
 cd projects/variant-annotator
@@ -47,7 +47,7 @@ Once inside the `variant-annotator` directory, follow the configuration and serv
 
 ### Configuration
 
-Copy `service.env.sample` to `service.env`.  **If working within the `niagads-pylib` monorepo, please COPY the file; DO NOT RENAME to avoid accidentally removing `service.env.sample` from the repository.**
+Copy `service.env.sample` to `service.env`.  **If working within the `open-access-service` monorepo, please COPY the file; DO NOT RENAME to avoid accidentally removing `service.env.sample` from the repository.**
 
 - Modify the `.env` as needed for your system and the service you want to run.
 
@@ -106,12 +106,12 @@ The `docker-compose.yaml` defines the following services:
 
     - ensure that the following environmental variables are set:
         `$DATA_DIR`: data directory on host
-        `PROJECT_DIR`: full path to the parent directory in which the `niagads-pylib` project exists
+        `PROJECT_DIR`: full path to the parent directory in which the `open-access-service` project exists
 
     - single file
 
     ```bash
-    source $PROJECT_DIR/niagads-pylib/projects/variant-annotator/bin/vep.sh --file <file_name> 
+    source $PROJECT_DIR/open-access-service/projects/variant-annotator/bin/vep.sh --file <file_name> 
     ```
 
     > defaults to use `--fork 4`.  To set a different number of forks, add the `--fork N` option to the command above
@@ -119,7 +119,7 @@ The `docker-compose.yaml` defines the following services:
     - multiple files in a single directory
 
     ```bash
-    source $PROJECT_DIR/niagads-pylib/projects/variant-annotator/bin/run_vep_parallel.sh <directory> <max_parallel> <fork>
+    source $PROJECT_DIR/open-access-service/projects/variant-annotator/bin/run_vep_parallel.sh <directory> <max_parallel> <fork>
     ```
 
     > `<max_parallel>` and `<fork>` are optional, defaulting to 4, and 3 respectively.  Max parallel is the number of files (jobs) to process in parallel; fork is the VEP fork parameter.

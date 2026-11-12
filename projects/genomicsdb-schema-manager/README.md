@@ -129,7 +129,7 @@ docker run --rm -it --network host -v <dir_on_host_with_sql_file>:/work postgres
 For example:
 
 ```bash
-docker run --rm -it --network host -v $PROJECT_DIR/niagads-pylib/projects/genomicsdb-schema-manager/sql/schemas/variant/tables/:/work postgres:18 psql -a -e $DATABASE_URI -f /work/create_variant_lookup_indexes.sql
+docker run --rm -it --network host -v $PROJECT_DIR/open-access-service/projects/genomicsdb-schema-manager/sql/schemas/variant/tables/:/work postgres:18 psql -a -e $DATABASE_URI -f /work/create_variant_lookup_indexes.sql
 ```
 
-docker run --rm -it --network host -v $PROJECT_DIR/niagads-pylib/projects/genomicsdb-schema-manager/sql/schemas/variant/tables/:/work postgres:18 psql -a -e $DATABASE_URI -f /work/create_variant_tuning_indexes.sql
+docker run --rm -it --network host -v $PROJECT_DIR/open-access-service/projects/genomicsdb-schema-manager/sql/schemas/variant/tables/:/work postgres:18 psql -a -e $DATABASE_URI -f /work/create_variant_tuning_indexes.sql
