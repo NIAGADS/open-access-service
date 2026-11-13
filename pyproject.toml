@@ -22,6 +22,7 @@ profile = "black"
 [tool.poetry]
 packages = [
     { include = "niagads/genomicsdb_etl", from = "bases" },
+    { include = "niagads/gwas_parquet_export", from = "bases" },
     { include = "niagads/metadata_validator_tool", from = "bases" },
     { include = "niagads/open_access_api", from = "bases" },
     { include = "niagads/pipeline_service", from = "bases" },
@@ -168,6 +169,7 @@ spaces_indent_inline_array = 4
 
 [tool.polylith.bricks]
 "bases/niagads/genomicsdb_etl" = "niagads/genomicsdb_etl"
+"bases/niagads/gwas_parquet_export" = "niagads/gwas_parquet_export"
 "bases/niagads/metadata_validator_tool" = "niagads/metadata_validator_tool"
 "bases/niagads/open_access_api" = "niagads/open_access_api"
 "bases/niagads/pipeline_service" = "niagads/pipeline_service"
