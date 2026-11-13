@@ -11,7 +11,7 @@ from niagads.api.common.models.records.types import DynamicRecord
 from niagads.api.common.models.responses.records import RecordResponse
 from niagads.api.common.types import AnnotationKind, ResponseContent
 from niagads.common.models.base import CustomBaseModel
-from niagads.common.search.models.record import SearchMatch
+from niagads.common.search.models.record import AnnotatedSearchMatch
 from niagads.common.types import Entity
 from pydantic import ConfigDict
 
@@ -33,7 +33,7 @@ OPERATIONS = {
         entity=Entity.TRACK,
         annotation=None,
         response_config=ResponseConfiguration(
-            response_model=RecordResponse, record_model=SearchMatch
+            response_model=RecordResponse, record_model=AnnotatedSearchMatch
         ),
     ),
     "search_genes": AskOperation(
@@ -41,7 +41,7 @@ OPERATIONS = {
         entity=Entity.GENE,
         annotation=None,
         response_config=ResponseConfiguration(
-            response_model=RecordResponse, record_model=SearchMatch
+            response_model=RecordResponse, record_model=AnnotatedSearchMatch
         ),
     ),
     "gene": AskOperation(
@@ -161,5 +161,5 @@ OPERATIONS = {
 SEARCH_OPERATIONS = {
     operation.entity: name
     for name, operation in OPERATIONS.items()
-    if operation.response_config.record_model is SearchMatch
+    if operation.response_config.record_model is AnnotatedSearchMatch
 }

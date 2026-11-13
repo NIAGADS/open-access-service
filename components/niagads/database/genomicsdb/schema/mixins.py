@@ -5,7 +5,7 @@ from niagads.common.nlp.embedding.types import (
     Embedding,
     EmbeddingFunction,
 )
-from niagads.common.search.models.record import SearchMatch
+from niagads.common.search.models.record import AnnotatedSearchMatch
 from niagads.common.search.types import MatchType
 from niagads.common.types import RecordRetrievalResult
 from niagads.database.helpers import datetime_column
@@ -490,7 +490,7 @@ class SearchMixin:
         record_id,
         record_details,
         record_type,
-    ) -> list[SearchMatch]:
+    ) -> list[AnnotatedSearchMatch]:
         """Execute a search using standardized match results.
 
         Args:
@@ -526,13 +526,15 @@ class SearchMixin:
         rows = result.mappings().all()
 
         return [
-            SearchMatch(**row) for row in rows if row["matched_record_id"] is not None
+            AnnotatedSearchMatch(**row)
+            for row in rows
+            if row["matched_record_id"] is not None
         ]
 
     @classmethod
     async def search(
         cls, session: AsyncSession, search_text: str, *, allow_fuzzy: bool = False
-    ) -> list[SearchMatch]:
+    ) -> list[AnnotatedSearchMatch]:
         """Search for records using deterministic text matching.
         No parent fallback provided, must be implemented in child class.
 
@@ -555,7 +557,7 @@ class SearchMixin:
         embed: EmbeddingFunction,
         *,
         limit=10,
-    ) -> list[SearchMatch]:
+    ) -> list[AnnotatedSearchMatch]:
         """Search for semantically similar records using embedded query text.
         No parent fallback provided, must be implemented in child class.
 
@@ -581,7 +583,7 @@ class SearchMixin:
         embedding: Embedding,
         *,
         limit=10,
-    ) -> list[SearchMatch]:
+    ) -> list[AnnotatedSearchMatch]:
         """Search for semantically similar records using precomputed embeddings.
 
         Args:

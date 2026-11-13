@@ -1,7 +1,7 @@
 from typing import Any, Optional, Self
 
 from niagads.common.genomic.regions.models import OneBasedGenomicRegion
-from niagads.common.search.models.record import SearchMatch
+from niagads.common.search.models.record import AnnotatedSearchMatch
 from niagads.common.search.types import MatchType
 from niagads.common.types import Entity, RecordRetrievalResult
 from niagads.common.variant.models.annotations import LDPartner
@@ -127,7 +127,7 @@ class Variant(
     @classmethod
     async def search(
         cls, session: AsyncSession, search_text: str, *, limit: int = 5
-    ) -> list[SearchMatch]:
+    ) -> list[AnnotatedSearchMatch]:
         """Search variants using deterministic text matching.
 
         Args:
@@ -176,7 +176,7 @@ class Variant(
             .limit(limit)
         )
         rows = (await session.execute(stmt)).mappings().all()
-        return [SearchMatch(**row) for row in rows]
+        return [AnnotatedSearchMatch(**row) for row in rows]
 
     @classmethod
     async def semantic_search(
@@ -261,7 +261,7 @@ class Variant(
             .limit(limit)
         )
         rows = (await session.execute(stmt)).mappings().all()
-        return [SearchMatch(**row) for row in rows]
+        return [AnnotatedSearchMatch(**row) for row in rows]
 
     # -------------------------
     # Record Retrieval

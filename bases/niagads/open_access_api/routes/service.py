@@ -1,17 +1,19 @@
 """JSON service endpoints for external applications."""
 
 from re import IGNORECASE
+from typing import Union
 
 from fastapi import APIRouter, Depends, Query
 from niagads.api.common.models.context.request import Parameters
 from niagads.api.common.models.context.response import ResponseConfiguration
 from niagads.api.common.models.responses.records import RecordResponse
 from niagads.api.common.parameters.location import flank_param
+from niagads.api.common.parameters.response.response import data_response_content_param
 from niagads.api.common.services.gene import GeneEndpointService
 from niagads.api.common.services.ontology import OntologyEndpointService
 from niagads.api.common.services.variant import VariantEndpointService
 from niagads.api.common.types import ResponseContent, ResponseFormat
-from niagads.common.search.models.record import SearchMatch
+from niagads.common.search.models.record import AnnotatedSearchMatch, SearchMatch
 from niagads.open_access_api.dependencies import OpenAccessEndpointContext
 from niagads.utils.regular_expressions import RegularExpressions
 from niagads.utils.string import matches
@@ -64,7 +66,9 @@ async def get_feature_location(
     summary="Lookup ontology terms",
     description="Find (exact or fuzzy) matching ontology terms in a (optional) specific ontology namespace.",
     operation_id="keywordSearchOntologyTerm",
-    response_model=RecordResponse[SearchMatch],
+    response_model=Union[
+        RecordResponse[AnnotatedSearchMatch], RecordResponse[SearchMatch]
+    ],
     openapi_extra={"x-status": "beta"},
 )
 async def search_ontology_term(
@@ -82,17 +86,20 @@ async def search_ontology_term(
         description=("Optional ontology namespace to scope the query."),
         examples=["GO", "MeSH", "MONDO", "HP"],
     ),
+    content: ResponseContent = Depends(data_response_content_param),
     context: OpenAccessEndpointContext = Depends(),
-) -> RecordResponse[SearchMatch]:
+) -> Union[RecordResponse[AnnotatedSearchMatch], RecordResponse[SearchMatch]]:
 
     service = OntologyEndpointService(
         context=context,
         parameters=Parameters(keyword=keyword, namespace=namespace),
         response_config=ResponseConfiguration(
             format=ResponseFormat.JSON,
-            content=ResponseContent.FULL,
+            content=content,
             response_model=RecordResponse,
-            record_model=SearchMatch,
+            record_model=(
+                AnnotatedSearchMatch if content == ResponseContent.FULL else SearchMatch
+            ),
         ),
     )
 

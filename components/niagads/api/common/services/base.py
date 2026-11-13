@@ -41,11 +41,15 @@ class BaseEndpointService(ComponentBaseMixin):
     async def _keyword_search(self, **kwargs):
         """perform keyword search and return matching records"""
         self.__validate_orm_utility("search")
-        return await self._orm_model.search(
+        result = await self._orm_model.search(
             self._context.database_session,
             search_text=self._parameters.keyword,
             **kwargs,
         )
+        return [
+            self._response_config.record_model(**match.model_dump(by_alias=False))
+            for match in result
+        ]
 
     async def _fetch_record(self, filters: dict):
         """try and fetch specific record. may occassionally return multiple

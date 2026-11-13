@@ -6,7 +6,7 @@ from niagads.api.common.models.context.response import ResponseConfiguration
 from niagads.api.common.models.responses.records import RecordResponse
 from niagads.api.common.parameters.response.pagination import page_param
 from niagads.api.common.services.query import QueryEndpointService
-from niagads.common.search.models.record import SearchMatch
+from niagads.common.search.models.record import AnnotatedSearchMatch
 from niagads.common.types import Entity
 from niagads.open_access_api.dependencies import OpenAccessEndpointContext
 
@@ -39,7 +39,7 @@ async def query_service(
         parameters=Parameters(text=text, limit=limit, page=page),
         response_config=ResponseConfiguration(
             response_model=RecordResponse,
-            record_model=SearchMatch,
+            record_model=AnnotatedSearchMatch,
         ),
     )
 
@@ -48,11 +48,11 @@ async def query_service(
     "",
     summary="Query tracks and genes",
     operation_id="queryResources",
-    response_model=RecordResponse[SearchMatch],
+    response_model=RecordResponse[AnnotatedSearchMatch],
 )
 async def query_resources(
     service: QueryEndpointService = Depends(query_service),
-) -> RecordResponse[SearchMatch]:
+) -> RecordResponse[AnnotatedSearchMatch]:
     result = await service.get_cached_response()
     if not result:
         result = await service.semantic_search()
@@ -66,11 +66,11 @@ async def query_resources(
     "/tracks",
     summary="Query track metadata",
     operation_id="queryTracks",
-    response_model=RecordResponse[SearchMatch],
+    response_model=RecordResponse[AnnotatedSearchMatch],
 )
 async def query_tracks(
     service: QueryEndpointService = Depends(query_service),
-) -> RecordResponse[SearchMatch]:
+) -> RecordResponse[AnnotatedSearchMatch]:
     result = await service.get_cached_response()
     if not result:
         result = await service.semantic_search(Entity.TRACK)
@@ -84,11 +84,11 @@ async def query_tracks(
     "/genes",
     summary="Query gene nomenclature and annotations",
     operation_id="queryGenes",
-    response_model=RecordResponse[SearchMatch],
+    response_model=RecordResponse[AnnotatedSearchMatch],
 )
 async def query_genes(
     service: QueryEndpointService = Depends(query_service),
-) -> RecordResponse[SearchMatch]:
+) -> RecordResponse[AnnotatedSearchMatch]:
     result = await service.get_cached_response()
     if not result:
         result = await service.semantic_search(Entity.GENE)
@@ -102,12 +102,12 @@ async def query_genes(
     "/variants",
     summary="Query variant annotations",
     operation_id="queryVariants",
-    response_model=RecordResponse[SearchMatch],
+    response_model=RecordResponse[AnnotatedSearchMatch],
     openapi_extra={"x-status": "planned"},
 )
 async def query_variants(
     service: QueryEndpointService = Depends(query_service),
-) -> RecordResponse[SearchMatch]:
+) -> RecordResponse[AnnotatedSearchMatch]:
     return NotImplemented("Coming soon: this search is not yet implemented.")
 
 
@@ -116,7 +116,7 @@ async def query_variants(
     summary="Query ontology terms",
     description="Search ontology terms and concept labels in a (optional) specific ontology namespace.",
     operation_id="queryOntologyTerms",
-    response_model=RecordResponse[SearchMatch],
+    response_model=RecordResponse[AnnotatedSearchMatch],
     openapi_extra={"x-status": "beta"},
 )
 async def query_ontology_terms(
@@ -130,7 +130,7 @@ async def query_ontology_terms(
         ),
         examples=["GO", "MeSH", "MONDO", "HP"],
     ),
-) -> RecordResponse[SearchMatch]:
+) -> RecordResponse[AnnotatedSearchMatch]:
     raise NotImplementedError("Ontology Semantic Search coming soon")
     # TODO: handle namespace parameter
     result = await service.get_cached_response()

@@ -1,7 +1,7 @@
 """Query the configured gene and track embeddings through the API."""
 
 import pytest
-from niagads.common.search.models.record import SearchMatch
+from niagads.common.search.models.record import AnnotatedSearchMatch
 from niagads.common.search.types import MatchType
 from niagads.common.types import Entity
 
@@ -18,7 +18,7 @@ def test_query_embeddings(client, entity):
     assert records
     assert len(records) <= 5
     for record in records:
-        match = SearchMatch(matched_record_id=record["id"], **record)
+        match = AnnotatedSearchMatch(matched_record_id=record["id"], **record)
         assert match.matched_record_type == entity
         assert match.match_type == MatchType.SEMANTIC
         assert match.matched_record_id

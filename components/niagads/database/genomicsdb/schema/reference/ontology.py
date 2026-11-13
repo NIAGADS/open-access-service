@@ -10,7 +10,7 @@ from typing import Union
 from niagads.common.models.base import CustomBaseModel
 from niagads.common.nlp.embedding.types import Embedding
 from niagads.common.reference.ontologies.types import EntityTypeIRI
-from niagads.common.search.models.record import SearchMatch
+from niagads.common.search.models.record import AnnotatedSearchMatch
 from niagads.common.search.types import MatchType
 from niagads.common.types import Entity
 from niagads.database.genomicsdb.schema.admin.catalog import TableCatalog
@@ -165,7 +165,7 @@ class OntologyTerm(
         allow_fuzzy: bool = True,
         include_ontology: list[str] = None,
         exclude_ontology: list[str] = None,
-    ) -> SearchMatch:
+    ) -> AnnotatedSearchMatch:
         ontology_condition = true()
         if include_ontology or exclude_ontology:
             filter_conditions = []
@@ -340,7 +340,7 @@ class OntologyTerm(
         embedding: Embedding,
         *,
         limit: int = 25,
-    ) -> list[SearchMatch]:
+    ) -> list[AnnotatedSearchMatch]:
         """Rank ontology terms by their best matching document chunk.
 
         Args:
@@ -385,7 +385,7 @@ class OntologyTerm(
         )
 
         rows = (await session.execute(stmt)).mappings().all()
-        return [SearchMatch(**row) for row in rows]
+        return [AnnotatedSearchMatch(**row) for row in rows]
 
     # -------------------------
     # Term Lookups
