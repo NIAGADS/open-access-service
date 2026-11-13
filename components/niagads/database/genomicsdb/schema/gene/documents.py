@@ -7,7 +7,7 @@ Defines the RAG document materialized view and related fields for querying gene 
 from typing import Optional
 
 from niagads.common.nlp.embedding.types import Embedding
-from niagads.common.search.models.record import SearchMatch
+from niagads.common.search.models.record import AnnotatedSearchMatch
 from niagads.common.search.types import MatchType
 from niagads.common.types import Entity, RecordRetrievalResult
 from niagads.database.genomicsdb.schema.admin.catalog import TableCatalog
@@ -121,7 +121,7 @@ class Gene(
         )
 
     @classmethod
-    async def search(cls, session: AsyncSession, search_text) -> SearchMatch:
+    async def search(cls, session: AsyncSession, search_text) -> AnnotatedSearchMatch:
 
         # exact matches
         exact_id_match_cte = cls._build_match_cte(
@@ -240,7 +240,7 @@ class Gene(
         *,
         limit: int = 10,
         sections: list[GeneDocumentSection] = None,
-    ) -> list[SearchMatch]:
+    ) -> list[AnnotatedSearchMatch]:
         """Rank genes by their best matching document chunk.
 
         Args:
@@ -302,7 +302,7 @@ class Gene(
         )
 
         rows = (await session.execute(stmt)).mappings().all()
-        return [SearchMatch(**row) for row in rows]
+        return [AnnotatedSearchMatch(**row) for row in rows]
 
     @classmethod
     async def retrieve_records(

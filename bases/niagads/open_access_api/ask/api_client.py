@@ -10,7 +10,7 @@ from niagads.api.common.types import AnnotationKind, ResponseFormat
 from niagads.api.common.utils import sanitize
 from niagads.common.genomic.features.models import GenomicFeature
 from niagads.common.genomic.regions.models import OneBasedGenomicRegion
-from niagads.common.search.models.record import SearchMatch
+from niagads.common.search.models.record import AnnotatedSearchMatch
 from niagads.common.types import Entity
 from niagads.open_access_api.ask.contracts import ResultSet
 from niagads.open_access_api.ask.operations import OPERATIONS
@@ -52,7 +52,7 @@ async def retrieve(
         raise RuntimeError(f"API operation {operation!r} is not registered")
     definition = OPERATIONS[operation]
     path = definition.endpoint
-    semantic_search = definition.response_config.record_model is SearchMatch
+    semantic_search = definition.response_config.record_model is AnnotatedSearchMatch
     params = dict(parameters)
     params["format"] = ResponseFormat.JSON.value
     if definition.annotation in {AnnotationKind.ASSOCIATIONS, AnnotationKind.REPORT}:

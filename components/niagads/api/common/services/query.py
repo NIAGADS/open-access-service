@@ -2,7 +2,7 @@
 
 from niagads.api.common.services.base import BaseEndpointService
 from niagads.api.common.services.embeddings import OpenRouterQueryEmbedding
-from niagads.common.search.models.record import SearchMatch
+from niagads.common.search.models.record import AnnotatedSearchMatch
 from niagads.common.types import Entity
 from niagads.database.genomicsdb.schema.dataset.track import Track
 from niagads.database.genomicsdb.schema.gene.documents import Gene
@@ -11,7 +11,9 @@ from niagads.database.genomicsdb.schema.gene.documents import Gene
 class QueryEndpointService(BaseEndpointService):
     """Search track and gene documents using a query embedding."""
 
-    async def semantic_search(self, entity: Entity | None = None) -> list[SearchMatch]:
+    async def semantic_search(
+        self, entity: Entity | None = None
+    ) -> list[AnnotatedSearchMatch]:
         """Retrieve semantic matches for one entity or combine all supported entities.
 
         Args:

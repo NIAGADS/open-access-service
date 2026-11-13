@@ -27,7 +27,6 @@ from niagads.api.common.types import ResponseContent, ResponseFormat
 from niagads.api.common.utils import sanitize
 from niagads.common.genomic.features.models import GenomicFeature
 from niagads.common.genomic.features.types import GenomicFeatureType
-from niagads.common.models.base import SerializationOptions
 from niagads.open_access_api.dependencies import OpenAccessEndpointContext
 
 logger = logging.getLogger(f"uvicorn.error.{__name__}")

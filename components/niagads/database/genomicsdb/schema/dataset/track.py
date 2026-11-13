@@ -4,7 +4,7 @@ from enum import auto
 from typing import List, Optional, Union
 
 from niagads.common.nlp.embedding.types import Embedding, EmbeddingFunction
-from niagads.common.search.models.record import SearchMatch
+from niagads.common.search.models.record import AnnotatedSearchMatch
 from niagads.common.search.types import MatchType
 from niagads.common.track.models import (
     BiosampleCharacteristics,
@@ -148,7 +148,7 @@ class Track(
     @classmethod
     async def search(
         cls, session: AsyncSession, search_text: str, *, allow_fuzzy: bool = False
-    ) -> list[SearchMatch]:
+    ) -> list[AnnotatedSearchMatch]:
         """Search track metadata using text matching.
 
         Args:
@@ -277,7 +277,7 @@ class Track(
             ranked_tracks.c.track_id.asc(),
         )
         rows = (await session.execute(stmt)).mappings().all()
-        return [SearchMatch(**row) for row in rows]
+        return [AnnotatedSearchMatch(**row) for row in rows]
 
     @classmethod
     async def semantic_search(
@@ -287,7 +287,7 @@ class Track(
         embed: EmbeddingFunction,
         *,
         limit: int = 10,
-    ) -> list[SearchMatch]:
+    ) -> list[AnnotatedSearchMatch]:
         """Search track metadata using embedded query text.
 
         Args:
@@ -309,7 +309,7 @@ class Track(
         embedding: Embedding,
         *,
         limit: int = 10,
-    ) -> list[SearchMatch]:
+    ) -> list[AnnotatedSearchMatch]:
         """Rank tracks by their best matching document chunk.
 
         Args:
@@ -361,7 +361,7 @@ class Track(
             .limit(limit)
         )
         rows = (await session.execute(stmt)).mappings().all()
-        return [SearchMatch(**row) for row in rows]
+        return [AnnotatedSearchMatch(**row) for row in rows]
 
     @classmethod
     async def retrieve_records(

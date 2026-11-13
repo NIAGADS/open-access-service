@@ -9,6 +9,7 @@ from pydantic import (
     Field,
     FieldSerializationInfo,
     field_serializer,
+    model_validator,
 )
 
 
@@ -25,9 +26,6 @@ class SearchMatch(CustomBaseModel):
         description="unique record identifier",
     )
 
-    matched_record_details: MatchedRecordDetails = Field(
-        title="Qualifying or descriptive information for the record"
-    )
     matched_record_type: Entity = Field(title="Record Type")
     matched_text: str = Field(title="Matched", description="matched term or phrase")
     match_type: MatchType = Field(
@@ -43,6 +41,23 @@ class SearchMatch(CustomBaseModel):
         default=None, title="Score", description="semantic similarity, if relevant"
     )
 
+    matched_record_label: str
+
+    @model_validator(mode="before")
+    @classmethod
+    def populate_label(cls, data: Any) -> Any:
+        """Populate a missing label from the matched record details."""
+        if isinstance(data, dict) and "label" not in data:
+            if "matched_record_details" in data:
+                details = data["matched_record_details"]
+                matched_record_label = (
+                    details.label
+                    if isinstance(details, MatchedRecordDetails)
+                    else details["label"]
+                )
+                return {**data, "matched_record_label": matched_record_label}
+        return data
+
     @field_serializer("*")
     def serialize_types(self, v, _info: FieldSerializationInfo):
         """custom field handlers
@@ -54,3 +69,9 @@ class SearchMatch(CustomBaseModel):
             return v.name
 
         return v
+
+
+class AnnotatedSearchMatch(SearchMatch):
+    matched_record_details: MatchedRecordDetails = Field(
+        title="Qualifying or descriptive information for the record"
+    )
