@@ -6,16 +6,11 @@ from niagads.api.common.models.annotations.associations import VariantAssociatio
 from niagads.api.common.models.context.request import Parameters
 from niagads.api.common.models.context.response import ResponseConfiguration
 from niagads.api.common.models.records.types import DynamicRecord
-from niagads.api.common.models.responses.base import BaseResponseModel
 from niagads.api.common.parameters.internal import EndpointContext
 from niagads.api.common.services.pagination import PaginationService
 from niagads.common.core import ComponentBaseMixin
 from niagads.common.models.types import Range
-from niagads.common.types import RecordRetrievalResult
 from niagads.common.variant.models.record import VariantRecord
-from niagads.database.genomicsdb.schema.results.associations import (
-    VariantAssociation as VAOrm,
-)
 from niagads.utils.regular_expressions import RegularExpressions
 from niagads.utils.string import matches
 
@@ -42,6 +37,15 @@ class BaseEndpointService(ComponentBaseMixin):
             raise RuntimeError(
                 f"`{function_name}` not implemented for {self._orm_model.__name__}"
             )
+
+    async def _keyword_search(self, **kwargs):
+        """perform keyword search and return matching records"""
+        self.__validate_orm_utility("search")
+        return await self._orm_model.search(
+            self._context.database_session,
+            search_text=self._parameters.keyword,
+            **kwargs,
+        )
 
     async def _fetch_record(self, filters: dict):
         """try and fetch specific record. may occassionally return multiple
