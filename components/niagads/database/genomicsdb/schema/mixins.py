@@ -510,9 +510,9 @@ class SearchMixin:
 
         stmt = (
             select(
-                record_id.label("record_id"),
-                record_details.label("record_details"),
-                literal(str(record_type)).label("record_type"),
+                record_id.label("matched_record_id"),
+                record_details.label("matched_record_details"),
+                literal(str(record_type)).label("matched_record_type"),
                 rank,
                 score,
                 matched_text,
@@ -525,7 +525,9 @@ class SearchMixin:
         result = await session.execute(stmt)
         rows = result.mappings().all()
 
-        return [SearchMatch(**row) for row in rows if row["record_id"] is not None]
+        return [
+            SearchMatch(**row) for row in rows if row["matched_record_id"] is not None
+        ]
 
     @classmethod
     async def search(

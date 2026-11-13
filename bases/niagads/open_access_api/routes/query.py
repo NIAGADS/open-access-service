@@ -109,3 +109,34 @@ async def query_variants(
     service: QueryEndpointService = Depends(query_service),
 ) -> RecordResponse[SearchMatch]:
     return NotImplemented("Coming soon: this search is not yet implemented.")
+
+
+@router.get(
+    "/ontology",
+    summary="Query ontology terms",
+    description="Search ontology terms and concept labels in a (optional) specific ontology namespace.",
+    operation_id="queryOntologyTerms",
+    response_model=RecordResponse[SearchMatch],
+    openapi_extra={"x-status": "beta"},
+)
+async def query_ontology_terms(
+    service: QueryEndpointService = Depends(query_service),
+    namespace: str = Query(
+        default="",
+        title="Ontology Namespace",
+        description=(
+            "Optional ontology namespace to scope the query. Common values include "
+            "GO, MeSH, MONDO, and HP.  Namespaces are exact (case sensitive) matches"
+        ),
+        examples=["GO", "MeSH", "MONDO", "HP"],
+    ),
+) -> RecordResponse[SearchMatch]:
+    raise NotImplementedError("Ontology Semantic Search coming soon")
+    # TODO: handle namespace parameter
+    result = await service.get_cached_response()
+    if not result:
+        result = await service.semantic_search(Entity.ONTOLOGY_TERM)
+        from_cache = False
+    else:
+        from_cache = True
+    return await service.generate_response(result, from_cache=from_cache)

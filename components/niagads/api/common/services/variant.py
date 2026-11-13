@@ -12,7 +12,6 @@ from niagads.database.genomicsdb.schema.results.associations import (
     VariantAssociation as VAOrm,
 )
 from niagads.database.genomicsdb.schema.variant.documents import Variant as VariantORM
-from sqlalchemy.exc import NoResultFound
 
 
 class VariantEndpointService(BaseEndpointService):

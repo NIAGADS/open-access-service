@@ -7,7 +7,7 @@ from niagads.database.genomicsdb.schema.mixins import IdAliasMixin
 from niagads.database.genomicsdb.schema.reference.base import ReferenceTableBase
 from niagads.database.genomicsdb.schema.reference.helpers import ontology_term_fk_column
 from niagads.database.helpers import datetime_column
-from sqlalchemy import String, Text, UniqueConstraint
+from sqlalchemy import Column, Index, String, Text, UniqueConstraint, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 
@@ -15,6 +15,10 @@ class ExternalDatabase(ReferenceTableBase, IdAliasMixin):
     __tablename__ = "externaldatabase"
     __table_args__ = (
         UniqueConstraint("name", "version", name="uq_externaldatabase_name_version"),
+        Index(
+            "ix_reference_externaldatabase_database_key_upper",
+            func.upper(Column("database_key")),
+        ),
         ReferenceTableBase.__table_args__,
     )
     _stable_id = "database_key"

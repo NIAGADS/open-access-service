@@ -166,21 +166,45 @@ class OntologyTerm(
         include_ontology: list[str] = None,
         exclude_ontology: list[str] = None,
     ) -> SearchMatch:
+        ontology_condition = true()
+        if include_ontology or exclude_ontology:
+            filter_conditions = []
+
+            if include_ontology:
+                filter_conditions.append(
+                    func.upper(ExternalDatabase.database_key).in_(
+                        [ontology.upper() for ontology in include_ontology]
+                    )
+                )
+
+            if exclude_ontology:
+                filter_conditions.append(
+                    func.upper(ExternalDatabase.database_key).notin_(
+                        [ontology.upper() for ontology in exclude_ontology]
+                    )
+                )
+
+            external_database_ids = select(ExternalDatabase.external_database_id).where(
+                and_(*filter_conditions)
+            )
+            ontology_condition = OntologyTerm.external_database_id.in_(
+                external_database_ids
+            )
 
         # exact matches
         exact_term_match_cte = cls._build_match_cte(
             "exact_term_match",
             MatchType.EXACT_ID,
             OntologyTerm.term,
-            OntologyTerm.term.ilike(search_text),
+            and_(OntologyTerm.term.ilike(search_text), ontology_condition),
         )
 
-        curies = [search_text.upper(), search_text.replace("_", ":").upper()]
+        curie = search_text.replace("_", ":")
         exact_curie_match_cte = cls._build_match_cte(
             "exact_curie_match",
             MatchType.EXACT_ID,
             OntologyTerm.source_id,
-            func.upper(OntologyTerm.source_id).in_(curies),
+            and_(OntologyTerm.source_id == curie, ontology_condition),
         )
 
         # Expose `unnest(synonyms)` as a lateral table with a PostgreSQL-recognized `term` column.
@@ -195,7 +219,7 @@ class OntologyTerm(
             "exact_synonym_match",
             MatchType.EXACT_SYNONYM,
             synonyms.c.term,
-            synonyms.c.term.ilike(search_text),
+            and_(synonyms.c.term.ilike(search_text), ontology_condition),
             join_clause=(synonyms, true()),
         )
 
@@ -204,14 +228,14 @@ class OntologyTerm(
             "partial_term_match",
             MatchType.PARTIAL_ID,
             OntologyTerm.term,
-            OntologyTerm.term.ilike(wildcard_phrase),
+            and_(OntologyTerm.term.ilike(wildcard_phrase), ontology_condition),
         )
 
         partial_synonym_match_cte = cls._build_match_cte(
             "partial_synonym_match",
             MatchType.PARTIAL_SYNONYM,
             synonyms.c.term,
-            synonyms.c.term.ilike(wildcard_phrase),
+            and_(synonyms.c.term.ilike(wildcard_phrase), ontology_condition),
             join_clause=(synonyms, true()),
         )
 
@@ -219,7 +243,10 @@ class OntologyTerm(
             "partial_annotation_match",
             MatchType.PARTIAL_DESCRIPTIVE,
             OntologyTerm.definition,
-            OntologyTerm.definition.ilike(wildcard_phrase),
+            and_(
+                OntologyTerm.definition.ilike(wildcard_phrase),
+                ontology_condition,
+            ),
         )
 
         # fuzzy matches
@@ -230,6 +257,7 @@ class OntologyTerm(
             and_(
                 OntologyTerm.term.op("%")(search_text),
                 func.similarity(OntologyTerm.term, search_text) >= 0.5,
+                ontology_condition,
             ),
             score=func.similarity(OntologyTerm.term, search_text),
         )
@@ -241,6 +269,7 @@ class OntologyTerm(
             and_(
                 OntologyTerm.definition.op("%")(search_text),
                 func.similarity(OntologyTerm.definition, search_text) >= 0.5,
+                ontology_condition,
             ),
             score=func.similarity(OntologyTerm.definition, search_text),
         )
@@ -258,6 +287,7 @@ class OntologyTerm(
                 # pre-filter (before join)
                 OntologyTerm.synonym_list_str.op("%")(search_text),
                 func.similarity(synonyms.c.term, search_text) >= 0.5,
+                ontology_condition,
             ),
             score=func.similarity(synonyms.c.term, search_text),
             join_clause=(synonyms, true()),
@@ -287,70 +317,13 @@ class OntologyTerm(
 
         matches_cte = union(*match_selects).cte("matches")
 
-        # Find the top ranked/scored hit per matching record.
-        rank, score, matched_text, match_type = cls._build_windowing_functions(
+        return await cls._execute_search(
+            session,
             matches_cte,
             record_id=matches_cte.c.source_id,
+            record_details=cls._build_record_details(matches_cte),
+            record_type=Entity.ONTOLOGY_TERM,
         )
-
-        stmt = select(
-            matches_cte.c.source_id.label("record_id"),
-            matches_cte.c.external_database_id,
-            cls._build_record_details(matches_cte).label("record_details"),
-            literal(str(Entity.ONTOLOGY_TERM)).label("record_type"),
-            rank,
-            score,
-            matched_text,
-            match_type,
-        )
-
-        # optionally filter for specific ontologies
-        if include_ontology or exclude_ontology:
-            filter_conditions = []
-
-            if include_ontology:
-                filter_conditions.append(
-                    func.upper(ExternalDatabase.database_key).in_(
-                        [ontology.upper() for ontology in include_ontology]
-                    )
-                )
-
-            if exclude_ontology:
-                filter_conditions.append(
-                    func.upper(ExternalDatabase.database_key).notin_(
-                        [ontology.upper() for ontology in exclude_ontology]
-                    )
-                )
-
-            matches_subquery = stmt.subquery("matches")
-            stmt = (
-                select(matches_subquery)
-                .join(
-                    ExternalDatabase,
-                    ExternalDatabase.external_database_id
-                    == matches_subquery.c.external_database_id,
-                )
-                .where(and_(*filter_conditions))
-                .distinct()
-                .order_by(
-                    matches_subquery.c.rank.asc(), matches_subquery.c.score.desc()
-                )
-            )
-
-        else:
-            stmt = stmt.distinct().order_by(rank.asc(), score.desc())
-
-        # DEBUG - for optimizing the sql, prints with binds embedded
-        # print("--------------QUERY-------------")
-        # print(DatabaseSessionManager.compile_select_statement(stmt))
-        # print("--------------------------------")
-
-        result = await session.execute(stmt)
-        rows = result.mappings().all()
-
-        # if no matches will get one result with all fields except literals as NULL
-        # if we filter for those, an empty result should be returned as []
-        return [SearchMatch(**r) for r in rows if r["record_id"] is not None]
 
     @classmethod
     async def semantic_search(cls, session, phrase, embed, *, limit=10):
