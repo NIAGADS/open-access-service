@@ -24,6 +24,17 @@
 - See `components/niagads/utils/` for utility patterns and `projects/` for integration examples.
 - For ETL plugin guidance, consult `bases/niagads/genomicsdb_etl/README.md` and example plugins in `bases/niagads/genomicsdb_etl/plugins/`.
 
+### Poetry Environment
+
+- Use Python 3.12 and the root monorepo `pyproject.toml` and `poetry.lock`.
+- Run `poetry install` from the repository root to initialize the monorepo Poetry environment.
+- Use the resulting root `.venv/` for all development commands and tooling.
+- Do not independently create virtual environments or install dependencies under `projects/`, `bases/`, or `components/`.
+- Do not build, package, or install individual Polylith projects during environment initialization unless explicity requested.
+- Do not run `poetry build-project` or modify project-specific lockfiles unless explicitly requested.
+- Use `poetry run` from the repository root for Python commands and tooling.
+- Do not modify the repository's Poetry configuration or dependency definitions to accommodate environment initialization failures. Report failures and request guidance instead.
+
 ## 2. Git and Workspace Rules
 
 ### Branch Naming
