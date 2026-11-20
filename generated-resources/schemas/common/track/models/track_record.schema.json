@@ -1,0 +1,1109 @@
+{
+  "$defs": {
+    "BiosampleCharacteristics": {
+      "properties": {
+        "biosample": {
+          "default": null,
+          "description": "ontology term describing the biosample",
+          "items": {
+            "$ref": "#/$defs/OntologyTerm"
+          },
+          "title": "Biosample",
+          "type": "array"
+        },
+        "biosample_type": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/BiosampleType"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "the biological source of a sample used in an experiment",
+          "title": "Biosample: Type"
+        },
+        "biomarker": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/OntologyTerm"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Biomarker"
+        },
+        "system": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "is_filer_annotation": true,
+          "title": "Biosample: Anatomical System"
+        },
+        "tissue": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/OntologyTerm"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "is_filer_annotation": true,
+          "title": "Biosample: Tissue"
+        },
+        "life_stage": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/OntologyTerm"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "donor or sample life stage",
+          "is_filer_annotation": true,
+          "title": "Biosample: Life Stage"
+        }
+      },
+      "title": "BiosampleCharacteristics",
+      "type": "object"
+    },
+    "BiosampleType": {
+      "enum": [
+        {
+          "curie": "UBERON:0000479",
+          "term": "tissue"
+        },
+        {
+          "curie": "CL:0000000",
+          "term": "cell"
+        },
+        {
+          "curie": "EFO:0002660",
+          "term": "primary cell"
+        },
+        {
+          "curie": "CL:0000034",
+          "term": "stem cell"
+        },
+        {
+          "curie": "CL:0000001",
+          "term": "primary cell culture"
+        },
+        {
+          "curie": "CL:0000578",
+          "term": "experimentally modified cell in vitro"
+        },
+        {
+          "curie": "CLO:0000031",
+          "term": "cell line"
+        },
+        {
+          "curie": "CLO:0037279",
+          "term": "embryonic stem cell line cell"
+        },
+        {
+          "curie": "CLO:0037307",
+          "term": "induced pluripotent stem cell line cell"
+        },
+        {
+          "curie": "NCIT:C172259",
+          "term": "organoid"
+        }
+      ],
+      "title": "BiosampleType",
+      "type": "object"
+    },
+    "Consortia": {
+      "enum": [
+        "IGAP",
+        "ADGC",
+        "ADSP",
+        "ADNI"
+      ],
+      "title": "Consortia",
+      "type": "string"
+    },
+    "CurationActorType": {
+      "description": "Actor types for curation events.",
+      "enum": [
+        "PERSON",
+        "ORGANIZATION",
+        "SOFTWARE"
+      ],
+      "title": "CurationActorType",
+      "type": "string"
+    },
+    "CurationEvent": {
+      "description": "Record of a single curation/processing action applied to a Track.\n\nMinimal, user-facing fields only. Designed to be serialised as part of\n`Track.curation_history` and to be easily mappable to provenance/activity\nrecords if required later.",
+      "properties": {
+        "event_date": {
+          "title": "Event date",
+          "type": "string"
+        },
+        "event_type": {
+          "$ref": "#/$defs/CurationEventType",
+          "default": "STANDARDIZE",
+          "title": "Event Type"
+        },
+        "actor": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": "NIAGADS",
+          "description": "Agent performing the event (user or service)",
+          "title": "Actor"
+        },
+        "actor_type": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CurationActorType"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": "ORGANIZATION",
+          "description": "One of ['person', 'organization', 'software']",
+          "title": "Actor Type"
+        },
+        "tool": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Software or pipeline name",
+          "title": "Tool"
+        },
+        "tool_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tool Version"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        }
+      },
+      "required": [
+        "event_date",
+        "description"
+      ],
+      "title": "CurationEvent",
+      "type": "object"
+    },
+    "CurationEventType": {
+      "description": "Controlled vocabulary for curation event types.",
+      "enum": [
+        "PREPROCESS",
+        "VALIDATE",
+        "STANDARDIZE",
+        "HARMONIZE",
+        "ENRICH",
+        "REEMBED",
+        "FILTER",
+        "OTHER"
+      ],
+      "title": "CurationEventType",
+      "type": "string"
+    },
+    "ExperimentalDesign": {
+      "properties": {
+        "antibody_target": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "is_filer_annotation": true,
+          "title": "Antibody Target"
+        },
+        "assay": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "is_filer_annotation": true,
+          "title": "Assay"
+        },
+        "analysis": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Analysis"
+        },
+        "classification": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "is_filer_annotation": true,
+          "title": "Classification"
+        },
+        "data_category": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data Category"
+        },
+        "output_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "is_filer_annotation": true,
+          "title": "Output Type"
+        },
+        "is_lifted": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "data are lifted from earlier genome build",
+          "title": "Is Lifted?"
+        },
+        "covariates": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/OntologyTerm"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Covariates"
+        }
+      },
+      "title": "ExperimentalDesign",
+      "type": "object"
+    },
+    "FileProperties": {
+      "properties": {
+        "file_name": {
+          "title": "File Name",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "is_filer_annotation": true,
+          "title": "URL"
+        },
+        "md5sum": {
+          "pattern": "^[a-fA-F0-9]{32}$",
+          "title": "MD5 Sum",
+          "type": "string"
+        },
+        "bp_covered": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "is_filer_annotation": true,
+          "title": "Base Pairs Covered"
+        },
+        "num_intervals": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "is_filer_annotation": true,
+          "title": "Number of Intervals"
+        },
+        "file_size": {
+          "title": "File Size",
+          "type": "integer"
+        },
+        "file_format": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "is_filer_annotation": true,
+          "title": "File Format"
+        },
+        "file_schema": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "is_filer_annotation": true,
+          "title": "File Schema"
+        },
+        "release_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "is_filer_annotation": true,
+          "title": "Release Date"
+        }
+      },
+      "required": [
+        "file_name",
+        "md5sum",
+        "file_size"
+      ],
+      "title": "FileProperties",
+      "type": "object"
+    },
+    "GenomeBuild": {
+      "description": "enum for genome builds",
+      "enum": [
+        "GRCh37",
+        "GRCh38"
+      ],
+      "title": "GenomeBuild",
+      "type": "string"
+    },
+    "GenomicFeatureType": {
+      "enum": [
+        "GENE",
+        "VARIANT",
+        "STRUCTURAL_VARIANT",
+        "REGION"
+      ],
+      "title": "GenomicFeatureType",
+      "type": "string"
+    },
+    "HumanGenome": {
+      "description": "Enum representing chromosomes on the primary human assembly.\n\nName=chrN, value=N\n\nstr(HumanGenome.chr1) will print the name (chr1)\n\nincludes validator",
+      "enum": [
+        "chr1",
+        "chr2",
+        "chr3",
+        "chr4",
+        "chr5",
+        "chr6",
+        "chr7",
+        "chr8",
+        "chr9",
+        "chr10",
+        "chr11",
+        "chr12",
+        "chr13",
+        "chr14",
+        "chr15",
+        "chr16",
+        "chr17",
+        "chr18",
+        "chr19",
+        "chr20",
+        "chr21",
+        "chr22",
+        "chrX",
+        "chrY",
+        "chrM"
+      ],
+      "title": "HumanGenome",
+      "type": "string"
+    },
+    "OntologyTerm": {
+      "description": "Basic ontology term identifiers",
+      "properties": {
+        "curie": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "unique, stable identifier",
+          "title": "Curie"
+        },
+        "term": {
+          "description": "the ontology term",
+          "title": "Term",
+          "type": "string"
+        }
+      },
+      "required": [
+        "term"
+      ],
+      "title": "OntologyTerm",
+      "type": "object"
+    },
+    "Phenotype": {
+      "properties": {
+        "disease": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/OntologyTerm"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Disease"
+        },
+        "neuropathology": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/OntologyTerm"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "pathology or classification of the degree of pathology",
+          "title": "Neuropathology"
+        },
+        "clinical_status": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/OntologyTerm"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "observed or reported characteristic used to describe an individual's health state",
+          "title": "Clinical Status or Symptom"
+        },
+        "ethnicity": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/OntologyTerm"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "cultural or linguistic/national origin",
+          "title": "Ethnicity"
+        },
+        "race": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/OntologyTerm"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "broad social/historyical classification, may be self-identified",
+          "title": "Race"
+        },
+        "population": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/OntologyTerm"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "defined by genetic ancestry, geography, or shared evolutionary history (mapped to Human Ancestry Ontology)",
+          "title": "Population"
+        },
+        "genotype": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/OntologyTerm"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Genotype"
+        },
+        "gender": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/OntologyTerm"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gender"
+        },
+        "derived_phenotype": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/OntologyTerm"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "phenotype inferred or calculated from one or more measured phenotypic variables",
+          "title": "Derived Phenotype"
+        }
+      },
+      "title": "Phenotype",
+      "type": "object"
+    },
+    "PhenotypeCount": {
+      "properties": {
+        "phenotype": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Phenotype"
+        },
+        "num_cases": {
+          "title": "Num Cases",
+          "type": "integer"
+        },
+        "num_controls": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Num Controls"
+        }
+      },
+      "required": [
+        "num_cases"
+      ],
+      "title": "PhenotypeCount",
+      "type": "object"
+    },
+    "Provenance": {
+      "properties": {
+        "data_source": {
+          "default": "NIAGADS_DSS",
+          "description": "original file data source",
+          "title": "Data Source",
+          "type": "string"
+        },
+        "accession": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "accession identifier in original data source; may be parent accession if track is part of a collection (e.g., NIAGADS DSS dataset accession)",
+          "title": "Accession"
+        },
+        "release_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "exclude_from_embeddings": true,
+          "title": "Release Date"
+        },
+        "release_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "exclude_from_embeddings": true,
+          "title": "Release Version"
+        },
+        "download_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "exclude_from_embeddings": true,
+          "is_filer_annotation": true,
+          "title": "Download Date"
+        },
+        "download_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "exclude_from_embeddings": true,
+          "is_filer_annotation": true,
+          "title": "Download URL"
+        },
+        "consortium": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/Consortia"
+              },
+              "type": "array",
+              "uniqueItems": true
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "collaborative partnership",
+          "title": "Consortium"
+        },
+        "study": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "is_filer_annotation": true,
+          "title": "Study"
+        },
+        "project": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "organizational unit that may include multiple studies and datasets under a common goal, funding source, or program. (e.g., ADSP FunGen xQTL)",
+          "title": "Project"
+        },
+        "attribution": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Z][a-zA-Z'-]+(?: et al\\.)? \\d{4}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Human-readable author citation for primary publication (or PI and year if no publication).  Must match author-date citation format, e.g., Smith 2006 or Smith et al. 2006",
+          "title": "Attribution"
+        },
+        "pubmed_id": {
+          "anyOf": [
+            {
+              "items": {
+                "pattern": "^([0-9]{8}|PMID:[0-9]{8})$",
+                "type": "string"
+              },
+              "type": "array",
+              "uniqueItems": true
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "PubMed ID"
+        },
+        "doi": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "uniqueItems": true
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "exclude_from_embeddings": true,
+          "title": "DOI"
+        }
+      },
+      "title": "Provenance",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "id": {
+      "description": "stable track identifier",
+      "title": "Track ID",
+      "type": "string"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "description": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Description"
+    },
+    "track_type": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/OntologyTerm"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "exclude_from_database": true,
+      "title": "Track Type"
+    },
+    "genome_build": {
+      "$ref": "#/$defs/GenomeBuild",
+      "default": "GRCh38",
+      "description": "reference genome build",
+      "title": "Genome Build"
+    },
+    "keywords": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/OntologyTerm"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Keywords (MeSH topical descriptors) describing this data track.",
+      "title": "Keywords"
+    },
+    "feature_type": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/GenomicFeatureType"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "primary type of genomic feature being annotated",
+      "title": "Feature"
+    },
+    "is_download_only": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "File is available for download only; data cannot be queried using the NIAGADS Open Access API.",
+      "exclude_from_embeddings": true,
+      "is_filer_annotation": true,
+      "title": "Download Only"
+    },
+    "is_shard": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Flag indicating whether track is part of a result set sharded by chromosome.",
+      "exclude_from_embeddings": true,
+      "is_filer_annotation": true,
+      "title": "Is Shard?"
+    },
+    "shard_chromosome": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/HumanGenome"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "exclude_from_embeddings": true,
+      "is_filer_annotation": true,
+      "title": "Shard Chromosome"
+    },
+    "cohorts": {
+      "anyOf": [
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Cohorts"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "file_properties": {
+      "$ref": "#/$defs/FileProperties",
+      "exclude_from_embeddings": true,
+      "title": "File Properties"
+    },
+    "experimental_design": {
+      "$ref": "#/$defs/ExperimentalDesign",
+      "default": null,
+      "title": "Experimental Design"
+    },
+    "participant_phenotypes": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Phenotype"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Phenotypes"
+    },
+    "study_diagnosis": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/PhenotypeCount"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "number of cases and controls",
+      "exclude_from_embeddings": true,
+      "title": "Study Diagnosis"
+    },
+    "biosample_characteristics": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/BiosampleCharacteristics"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Sample Characteristics"
+    },
+    "curation_history": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/CurationEvent"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Chronological list of curation events applied to this track",
+      "exclude_from_embeddings": true,
+      "title": "Curation History"
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "provenance",
+    "file_properties"
+  ],
+  "title": "TrackRecord",
+  "type": "object"
+}

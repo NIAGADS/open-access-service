@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: record-json-schemas
+        name: Generate record JSON schemas
+        entry: poetry run python hooks/generate_record_schemas.py
+        language: system
+        pass_filenames: false
+        exclude: ^(bases/|tests?/|components/niagads/(api|database|etl|requests|postgres_dbi)/)

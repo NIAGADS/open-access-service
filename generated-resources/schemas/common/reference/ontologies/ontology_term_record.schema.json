@@ -1,0 +1,121 @@
+{
+  "description": "Pydantic model representing a term in an ontology graph.\n\nUsed for storing ontology term metadata, including category, label,\ndefinition, synonyms, and obsolescence information.",
+  "properties": {
+    "curie": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "unique, stable identifier",
+      "title": "Curie"
+    },
+    "term": {
+      "description": "the ontology term",
+      "title": "Term",
+      "type": "string"
+    },
+    "term_iri": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "globally unique identifier for the ontology term (URI)",
+      "title": "Term Iri"
+    },
+    "label": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Human-readable label for the term",
+      "title": "Label"
+    },
+    "definition": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Textual definition of the term",
+      "title": "Definition"
+    },
+    "namespace": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Namespace"
+    },
+    "synonyms": {
+      "anyOf": [
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "List of synonyms for the term",
+      "title": "Synonyms"
+    },
+    "is_deprecated": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "True if the term is deprecated",
+      "title": "Is Deprecated"
+    },
+    "is_placeholder": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "True if palceholder term",
+      "title": "Is Placeholder"
+    }
+  },
+  "required": [
+    "term"
+  ],
+  "title": "OntologyTermRecord",
+  "type": "object"
+}

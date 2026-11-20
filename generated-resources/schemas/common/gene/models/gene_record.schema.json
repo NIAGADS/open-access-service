@@ -1,0 +1,259 @@
+{
+  "$defs": {
+    "GenomicRegion": {
+      "description": "Model representing a genomic region. Defaults to 1-based (inclusize_end = True)\n\nAttributes:\n    chromosome (HumanGenome): Chromosome name.\n    start (int): Start position (1-based, inclusive).\n    end (int): End position (1-based, inclusive).\n    length (Optional[int]): Length of the region.\n    strand (Optional[Strand]): DNA strand.\n    inclusive_end (bool): Whether the end coordinate is inclusive.",
+      "properties": {
+        "start": {
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "End"
+        },
+        "inclusive_end": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": true,
+          "title": "Inclusive End"
+        },
+        "chromosome": {
+          "$ref": "#/$defs/HumanGenome",
+          "title": "Chromosome"
+        },
+        "length": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Length"
+        },
+        "strand": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Strand"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": "SENSE",
+          "title": "Strand"
+        }
+      },
+      "required": [
+        "start",
+        "chromosome"
+      ],
+      "title": "GenomicRegion",
+      "type": "object"
+    },
+    "HumanGenome": {
+      "description": "Enum representing chromosomes on the primary human assembly.\n\nName=chrN, value=N\n\nstr(HumanGenome.chr1) will print the name (chr1)\n\nincludes validator",
+      "enum": [
+        "chr1",
+        "chr2",
+        "chr3",
+        "chr4",
+        "chr5",
+        "chr6",
+        "chr7",
+        "chr8",
+        "chr9",
+        "chr10",
+        "chr11",
+        "chr12",
+        "chr13",
+        "chr14",
+        "chr15",
+        "chr16",
+        "chr17",
+        "chr18",
+        "chr19",
+        "chr20",
+        "chr21",
+        "chr22",
+        "chrX",
+        "chrY",
+        "chrM"
+      ],
+      "title": "HumanGenome",
+      "type": "string"
+    },
+    "Strand": {
+      "enum": [
+        "SENSE",
+        "ANTISENSE"
+      ],
+      "title": "Strand",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "id": {
+      "description": "Ensembl gene identifier",
+      "title": "Ensembl ID",
+      "type": "string"
+    },
+    "gene_symbol": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "official gene symbol",
+      "title": "Gene Symbol"
+    },
+    "location": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/GenomicRegion"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "genomic location delimiting the footprint (span) of the gene",
+      "title": "Location"
+    },
+    "gene_type": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "biological type or classification of the gene",
+      "title": "Gene Type"
+    },
+    "nomenclature": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "gene naming information, including the symbol, name, and synonyms",
+      "title": "Nomenclature"
+    },
+    "gene_structure": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "gene location, cytogenetic location, and transcript structure",
+      "title": "Gene Structure"
+    },
+    "xrefs": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "cross-references to external gene identifiers and resources",
+      "title": "Cross References"
+    },
+    "publications": {
+      "anyOf": [
+        {
+          "items": {},
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "publications associated with the gene",
+      "title": "Publications"
+    },
+    "memberships": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "gene memberships in families, pathways, and curated lists",
+      "title": "Memberships"
+    },
+    "functional_annotation": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "functional annotations associated with the gene",
+      "title": "Functional Annotation"
+    },
+    "associated_with_known_ad_locus": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": false,
+      "description": "indicates whether the gene is associated with a known Alzheimer’s disease locus",
+      "title": "Associated with Known AD Locus"
+    }
+  },
+  "required": [
+    "id"
+  ],
+  "title": "GeneRecord",
+  "type": "object"
+}
