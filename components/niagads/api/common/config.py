@@ -8,6 +8,7 @@ from pydantic import Field, SecretStr
 class Settings(CustomSettings):
     DATABASE_URI: str  # application db (e.g., GenomicsDB or FILER metadata cache)
     CACHE_DB_URI: str  # in memory cache db
+    API_RATE_LIMIT: str = "120/minute"
 
     API_PUBLIC_URL: str = "http://localhost:8000"  # public facing URL for the API
 

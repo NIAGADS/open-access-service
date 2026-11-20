@@ -2,7 +2,7 @@ from io import StringIO
 
 import yaml
 from asgi_correlation_id import CorrelationIdMiddleware
-from fastapi import FastAPI
+from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 from fastapi.routing import APIRoute
@@ -16,11 +16,16 @@ from niagads.api.common.exception_handlers import (
     add_runtime_exception_handler,
     add_system_exception_handler,
 )
+from niagads.common.core import ComponentBaseMixin
 from niagads.settings.core import ServiceEnvironment, get_service_environment
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
+from slowapi.util import get_remote_address
 from starlette.types import Lifespan
 
 
-class AppFactory:
+class AppFactory(ComponentBaseMixin):
     """Class that to creates and configures a FastAPI application
     for a NIAGADS Open Access API microservice."""
 
@@ -39,7 +44,25 @@ class AppFactory:
             namespace (str, optional): for openapi specification x-namespace arg. Defaults to 'root'
             version (bool, optional): add API major  version to path.  Defaults to False
         """
+        super().__init__()
+        settings = Settings.from_env()
+        # Accept the existing cache URI while using the standard Redis protocol.
+        cache_uri = settings.CACHE_DB_URI
+        if cache_uri.startswith("keydb://"):
+            cache_uri = cache_uri.replace("keydb://", "redis://", 1)
+        self._limiter = Limiter(
+            key_func=get_remote_address,
+            application_limits=[settings.API_RATE_LIMIT],
+            storage_uri=cache_uri,
+            key_prefix="open-access:ratelimit",
+            strategy="fixed-window",
+            headers_enabled=True,
+            retry_after="delta-seconds",
+            swallow_errors=False,
+            in_memory_fallback_enabled=False,
+        )
         self._app: FastAPI = self._initialize_app(metadata, lifespan)
+        self._app.state.limiter = self._limiter
         self._add_middleware()
         self._add_exception_handlers()
 
@@ -91,6 +114,7 @@ class AppFactory:
 
         self._verify_app()
 
+        self._app.add_middleware(SlowAPIMiddleware)
         self._app.add_middleware(CorrelationIdMiddleware, header_name="X-Request-ID")
 
         # FIXME: probably depends on service environment
@@ -103,23 +127,30 @@ class AppFactory:
 
     def add_router(
         self,
-        route: APIRoute,
+        route: APIRouter,
         *,
         include_in_schema: bool = True,
+        rate_limit_exempt: bool = False,
         **kwargs,
     ) -> None:
-        """Add a route to the application.  Takes any arguments allowed for
-        FastAPI `include_router` see (https://fastapi.tiangolo.com/tutorial/bigger-applications/)
+        """Register a router, optionally exempting its endpoints from rate limits.
+
+        Additional arguments are passed to FastAPI's ``include_router``.
         """
         if self._app is None:
             raise RuntimeError("Application is not initialized.")
 
+        if rate_limit_exempt:
+            for endpoint_route in route.routes:
+                if isinstance(endpoint_route, APIRoute):
+                    self._limiter.exempt(endpoint_route.endpoint)
         self._app.include_router(route, include_in_schema=include_in_schema, **kwargs)
 
     def _add_exception_handlers(self):
         """Adds exception handlers to the application"""
 
         self._verify_app()
+        self._app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
         add_runtime_exception_handler(self._app)
         add_request_validation_exception_handler(self._app)
         add_system_exception_handler(self._app)
