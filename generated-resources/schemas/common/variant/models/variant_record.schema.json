@@ -1,0 +1,680 @@
+{
+  "$defs": {
+    "Allele": {
+      "description": "The state of a molecule at a location (GA4GH VRS-compliant)",
+      "properties": {
+        "type": {
+          "const": "Allele",
+          "default": "Allele",
+          "description": "GA4GH VRS type",
+          "title": "Type",
+          "type": "string"
+        },
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Optional identifier for the allele",
+          "title": "Id"
+        },
+        "digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Digest for the allele",
+          "title": "Digest"
+        },
+        "location": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/SequenceLocation"
+            }
+          ],
+          "description": "The location of the allele",
+          "title": "Location"
+        },
+        "state": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LiteralSequenceExpression"
+            },
+            {
+              "$ref": "#/$defs/ReferenceLengthExpression"
+            },
+            {
+              "$ref": "#/$defs/LengthExpression"
+            }
+          ],
+          "description": "An expression of the sequence state",
+          "title": "State"
+        }
+      },
+      "required": [
+        "location",
+        "state"
+      ],
+      "title": "Allele",
+      "type": "object"
+    },
+    "HumanGenome": {
+      "description": "Enum representing chromosomes on the primary human assembly.\n\nName=chrN, value=N\n\nstr(HumanGenome.chr1) will print the name (chr1)\n\nincludes validator",
+      "enum": [
+        "chr1",
+        "chr2",
+        "chr3",
+        "chr4",
+        "chr5",
+        "chr6",
+        "chr7",
+        "chr8",
+        "chr9",
+        "chr10",
+        "chr11",
+        "chr12",
+        "chr13",
+        "chr14",
+        "chr15",
+        "chr16",
+        "chr17",
+        "chr18",
+        "chr19",
+        "chr20",
+        "chr21",
+        "chr22",
+        "chrX",
+        "chrY",
+        "chrM"
+      ],
+      "title": "HumanGenome",
+      "type": "string"
+    },
+    "LengthExpression": {
+      "description": "A sequence expressed only by its length",
+      "properties": {
+        "type": {
+          "const": "LengthExpression",
+          "default": "LengthExpression",
+          "title": "Type",
+          "type": "string"
+        },
+        "sequence": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sequence"
+        },
+        "length": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              ],
+              "type": "array"
+            }
+          ],
+          "description": "The length of the sequence",
+          "title": "Length"
+        }
+      },
+      "required": [
+        "length"
+      ],
+      "title": "LengthExpression",
+      "type": "object"
+    },
+    "LiteralSequenceExpression": {
+      "description": "An explicit expression of a sequence",
+      "properties": {
+        "type": {
+          "const": "LiteralSequenceExpression",
+          "default": "LiteralSequenceExpression",
+          "title": "Type",
+          "type": "string"
+        },
+        "sequence": {
+          "description": "The literal sequence",
+          "title": "Sequence",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sequence"
+      ],
+      "title": "LiteralSequenceExpression",
+      "type": "object"
+    },
+    "ReferenceLengthExpression": {
+      "description": "An expression of a length from a repeating reference",
+      "properties": {
+        "type": {
+          "const": "ReferenceLengthExpression",
+          "default": "ReferenceLengthExpression",
+          "title": "Type",
+          "type": "string"
+        },
+        "sequence": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sequence"
+        },
+        "length": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              ],
+              "type": "array"
+            }
+          ],
+          "description": "The number of residues in the sequence",
+          "title": "Length"
+        },
+        "repeatSubunitLength": {
+          "description": "The number of residues in the repeat subunit",
+          "title": "Repeatsubunitlength",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "length",
+        "repeatSubunitLength"
+      ],
+      "title": "ReferenceLengthExpression",
+      "type": "object"
+    },
+    "SequenceLocation": {
+      "description": "A location defined by an interval on a sequence (GA4GH VRS-compliant)",
+      "properties": {
+        "type": {
+          "const": "SequenceLocation",
+          "default": "SequenceLocation",
+          "description": "GA4GH VRS type",
+          "title": "Type",
+          "type": "string"
+        },
+        "id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Optional identifier for the location",
+          "title": "Id"
+        },
+        "digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Digest for the location",
+          "title": "Digest"
+        },
+        "sequenceReference": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SequenceReference"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Reference to a sequence (GA4GH SequenceReference object)"
+        },
+        "start": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              ],
+              "type": "array"
+            }
+          ],
+          "description": "The start coordinate or range",
+          "title": "Start"
+        },
+        "end": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "maxItems": 2,
+              "minItems": 2,
+              "prefixItems": [
+                {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              ],
+              "type": "array"
+            }
+          ],
+          "description": "The end coordinate or range",
+          "title": "End"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "title": "SequenceLocation",
+      "type": "object"
+    },
+    "SequenceReference": {
+      "description": "Reference to a sequence (e.g., RefGet accession)",
+      "properties": {
+        "type": {
+          "const": "SequenceReference",
+          "default": "SequenceReference",
+          "description": "GA4GH VRS type",
+          "title": "Type",
+          "type": "string"
+        },
+        "refgetAccession": {
+          "description": "RefGet accession for the reference sequence",
+          "title": "Refgetaccession",
+          "type": "string"
+        }
+      },
+      "required": [
+        "refgetAccession"
+      ],
+      "title": "SequenceReference",
+      "type": "object"
+    },
+    "VariantClass": {
+      "enum": [
+        "SNV",
+        "MNV",
+        "SHORT_INDEL",
+        "SHORT_DEL",
+        "SHORT_INS",
+        "INDEL",
+        "DEL",
+        "INS",
+        "DUP",
+        "INV",
+        "TRANS",
+        "CNV",
+        "MEI",
+        "SV",
+        "LONG_MNV"
+      ],
+      "title": "VariantClass",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "ref_snp_id": {
+      "anyOf": [
+        {
+          "pattern": "^rs\\d+$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Ref Snp Id"
+    },
+    "id": {
+      "description": "stable NIAGADS variant ID",
+      "pattern": "^.+:\\d+:[ACGT]+:[ACGT]+$|^(MNV|INDEL|DEL|INS|DUP|INV|CNV|TRA)_CHR(MT|\\d{1,2}|[XYM])_([A-Z]|\\d){8}$",
+      "title": "Id",
+      "type": "string"
+    },
+    "chromosome": {
+      "$ref": "#/$defs/HumanGenome",
+      "title": "Chromosome"
+    },
+    "position": {
+      "description": "1-based position of the variant on the chromosome",
+      "title": "Position",
+      "type": "integer"
+    },
+    "length": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Length of the variant (in bases)",
+      "title": "Length"
+    },
+    "ref": {
+      "description": "Reference allele sequence",
+      "title": "Reference Allele",
+      "type": "string"
+    },
+    "alt": {
+      "description": "Alternate allele sequence",
+      "title": "Alternate Allele",
+      "type": "string"
+    },
+    "variant_class": {
+      "$ref": "#/$defs/VariantClass",
+      "default": null,
+      "description": "Variant class (e.g., SNV, INDEL, SV)",
+      "title": "Variant Class"
+    },
+    "ga4gh_vrs": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Allele"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "GA4GH VRS Allele object representation",
+      "title": "GA4GH VRS Allele"
+    },
+    "positional_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Positional variant identifier (chrom:pos:ref:alt)",
+      "title": "Positional ID"
+    },
+    "normalized_positional_id": {
+      "anyOf": [
+        {
+          "pattern": "^.+:\\d+:[ACGT-]+:[ACGT-]+$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Normalized positional variant identifier",
+      "title": "Normalized Positional ID"
+    },
+    "hgvs": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "HGVS representation of the variant",
+      "title": "HGVS"
+    },
+    "is_adsp_variant": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "indicates whether the variant is present in ADSP data",
+      "title": "Is ADSP Variant?"
+    },
+    "is_structural_variant": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "indicates whether the variant is structural",
+      "title": "Is Structural Variant?"
+    },
+    "is_annotated": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "indicates whether functional annotation is available",
+      "title": "Is Annotated?"
+    },
+    "adsp_annotation": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "ADSP-specific annotation data for the variant",
+      "title": "ADSP Annotation"
+    },
+    "most_severe_consequence": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "most severe predicted consequence for the variant",
+      "title": "Most Severe Consequence"
+    },
+    "functional_annotation": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "functional annotation data for the variant",
+      "title": "Functional Annotation"
+    },
+    "allele_frequency": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "allele frequency data for the variant",
+      "title": "Allele Frequency"
+    },
+    "ld_partners": {
+      "anyOf": [
+        {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "variants in linkage disequilibrium with this variant",
+      "title": "LD Partners"
+    },
+    "functional_annotation_summary": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "summary of the variant's functional annotation",
+      "title": "Functional Annotation Summary"
+    }
+  },
+  "required": [
+    "id",
+    "chromosome",
+    "position",
+    "ref",
+    "alt"
+  ],
+  "title": "VariantRecord",
+  "type": "object"
+}
