@@ -75,8 +75,7 @@ class RecordSchemaGenerator(ComponentBaseMixin):
             names = [
                 node.name
                 for node in definitions.body
-                if isinstance(node, ast.ClassDef)
-                and node.name.endswith("Record")
+                if isinstance(node, ast.ClassDef) and node.name.endswith("Record")
             ]
             if not names:
                 continue
