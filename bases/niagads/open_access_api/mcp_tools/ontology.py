@@ -17,5 +17,5 @@ def add_ols_ontology_search(mcp: FastMCP) -> None:
             }
         )
     )
-    ols.enable(names={"searchOlsOntology"}, only=True)
+    ols.enable(names={"searchOlsOntologies"}, only=True)
     mcp.mount(ols)
