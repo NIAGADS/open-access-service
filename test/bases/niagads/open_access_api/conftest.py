@@ -1,9 +1,13 @@
 import json
+from functools import partial
 from pathlib import Path
+from typing import AsyncGenerator
 
 import pytest
 from fastapi.testclient import TestClient
-from fastmcp import FastMCP
+from fastmcp import Client
+from fastmcp.client.transports import StreamableHttpTransport
+from httpx2 import ASGITransport, AsyncClient
 from niagads.open_access_api.app import app
 
 
@@ -15,9 +19,15 @@ def client(request):
 
 
 @pytest.fixture
-def mcp() -> FastMCP:
-    """Build an in-process MCP server from the API's registered routes."""
-    return FastMCP.from_fastapi(app=app)
+async def open_access_mcp() -> AsyncGenerator[Client, None]:
+    """Connect to the configured MCP endpoint with the app's resources initialized."""
+    async with app.router.lifespan_context(app):
+        transport = StreamableHttpTransport(
+            "http://testserver/mcp",
+            httpx_client_factory=partial(AsyncClient, transport=ASGITransport(app=app)),
+        )
+        async with Client(transport, timeout=30, init_timeout=15) as mcp_client:
+            yield mcp_client
 
 
 @pytest.fixture

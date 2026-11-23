@@ -124,6 +124,9 @@ This project handles enterprise-scale data. Account for performance when impleme
 
 - In local environments, environment variables are usually in `../.env` relative to the repository root. Load that file into the test process without exposing its values.
 - **Run tests only when explicitly requested.**
+- All API integration tests must use the existing application and its configured routes, middleware, dependencies, and lifespan. Run the application lifespan before requests so database and cache resources are initialized, and close them on teardown. Reuse the shared application fixtures and keep async resources on the same event loop. Do not create substitute applications or re-register routes or tools in test setup.
+- MCP integration tests follow the same application lifecycle requirements and must call the application's configured `/mcp` endpoint. Do not construct a separate `FastMCP` server or regenerate tools with `from_fastapi` in test setup.
+- When testing an external MCP integration, exercise the application's exposed tool against the real upstream service when requested, and check both registration and meaningful returned results. Do not substitute a direct upstream call for testing the application.
 - After editing, review the diff and perform relevant focused non-test checks. Report any checks that could not be run.
 - Run targeted checks first; repeat checks only after relevant changes or when investigating a failure.
 

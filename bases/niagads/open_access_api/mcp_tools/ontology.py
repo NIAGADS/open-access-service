@@ -7,7 +7,7 @@ from niagads.open_access_api.constants import EBI_OLS_MCP_URL
 
 def add_ols_ontology_search(mcp: FastMCP) -> None:
     """Expose EBI-OLS search through the MCP server."""
-    ols = create_proxy(EBI_OLS_MCP_URL)
+    ols = create_proxy(EBI_OLS_MCP_URL, mode="legacy")
     ols.add_transform(
         ToolTransform(
             {
