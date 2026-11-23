@@ -2,7 +2,7 @@ from io import StringIO
 
 import yaml
 from asgi_correlation_id import CorrelationIdMiddleware
-from fastapi import APIRouter, FastAPI
+from fastapi import APIRouter, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.routing import APIRoute
 from niagads.api.common.app.types import AppMetadata
@@ -21,6 +21,22 @@ from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 from slowapi.util import get_remote_address
 from starlette.types import Lifespan
+
+
+def rate_limit_key(request: Request) -> str:
+    """get identifier used to track how many requests a a specific client makes
+    within a set time window
+    supported:
+        - anonymous: client ip
+        - registered (trusted apps, approved token) - token
+        - mcp_client_id: forwarded client id or token
+
+    # TODO: token support
+    """
+    client_id = getattr(request.state, "mcp_client_id", None)
+    if client_id:
+        return f"mcp:{client_id}"
+    return f"ip:{get_remote_address(request)}"
 
 
 class AppFactory(ComponentBaseMixin):
@@ -69,7 +85,7 @@ class AppFactory(ComponentBaseMixin):
             cache_uri = cache_uri.replace("valkey", "redis")
 
         self._limiter = Limiter(
-            key_func=get_remote_address,
+            key_func=rate_limit_key,
             application_limits=[settings.API_RATE_LIMIT],
             storage_uri=cache_uri,
             key_prefix="open-access:ratelimit",
