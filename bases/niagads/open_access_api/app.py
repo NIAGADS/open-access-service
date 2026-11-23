@@ -18,21 +18,18 @@ from niagads.open_access_api.routes.records.variant import router as VariantReco
 from niagads.open_access_api.routes.service import router as ServiceRouter
 from niagads.settings.core import ServiceEnvironment, get_service_environment
 
+from pathlib import Path
+
+description_md_path = Path(__file__).resolve().parent / "data" / "api_description.md"
+description = description_md_path.read_text(encoding="utf-8")
+
 metadata = AppMetadata(
     title="NIAGADS Open Access API",
-    description=(
-        "The NIAGADS Open Access API provides programmatic access "
-        "to publicly available Alzheimer's disease and related dementias (AD/ADRD) "
-        "genomic data, annotations, and research resources. It supports querying "
-        "genetic variants, genes, GWAS summary statistics, genetic associations, "
-        "functional annotations, and related datasets across NIAGADS Open "
-        "Access resources."
-    ),
+    description=description,
     summary=(
         "NIAGADS Open Access API for Alzheimer's disease and related dementias "
         "genomic data and annotations."
     ),
-    # servers=[{"url": "https://api.niagads.org", "description": "Production server"}],
 )
 
 

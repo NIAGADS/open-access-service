@@ -22,10 +22,10 @@ API requests are subject to the following limits:
 | Access | General Endpoints | Service Endpoints |
 | --- | --- | --- |
 | Anonymous | 120 requests/minute | 120 requests/minute |
-| Registered Account* | 300 requests / minute | 300 requests / minute |
+| Approved API Token* | 300 requests / minute | 300 requests / minute |
 | Trusted applications | 300 requests / minute | Exempt |
 
-_* Registered accounts coming soon._
+_* Registered accounts with approved API tokens coming soon._
 
 Rate limits apply to requests originating from the same client IP address.
 
