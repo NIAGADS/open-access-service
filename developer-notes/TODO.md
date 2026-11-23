@@ -14,6 +14,8 @@
   * client-side: SSO & request/assign API token (two classes: trusted application & generic approved registered user)
   * server-side: apply tokens to rate limits
   * qualify rate limits based on anonymous v token
+* mcp
+  * client-side documentation (available tools)
 
 ## ASK NIAGADS alpha
 
