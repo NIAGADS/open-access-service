@@ -31,3 +31,28 @@ _* Registered accounts with approved API tokens coming soon._
 Rate limits apply to requests originating from the same client IP address.
 
 Requests exceeding the applicable limit receive HTTP `429 Too Many Requests`. The `Retry-After` response header indicates the number of seconds to wait before retrying.
+
+## Model Context Protocol (MCP)
+
+NIAGADS Open Access provides a hosted Model Context Protocol (MCP), enabling AI assistants and agents to discover and access supported API functionality through standardized tools.
+
+### MCP Server
+
+The MCP server for this instance of the API is found at:
+
+[https://api.niagads.org/api/mcp](https://api.niagads.org/api/mcp)
+
+The MCP server uses Streamable HTTP and exposes supported API endpoints as discoverable tools. No separate MCP credentials are required for publicly accessible endpoints.
+
+### Connecting an MCP Client
+
+Configure an MCP-compatible client using the endpoint URL above and the Streamable HTTP transport. The client handles protocol initialization, tool discovery, and tool execution.
+
+Once connected, AI assistants and agents can discover available tools, inspect their input schemas, and submit requests using the same underlying API functionality available through REST.
+
+### Usage Guidelines
+
+- **Tool discovery:** Available tools and their parameters are provided automatically through MCP.
+- **Rate limits:** MCP requests are subject to the API's published rate limits. Clients should handle rate-limit responses and retry appropriately.
+- **Data access:** MCP tools follow the same access restrictions as their corresponding REST endpoints.
+- **Documentation:** Refer to the API's endpoint documentation for detailed descriptions of supported operations, parameters, and returned data.

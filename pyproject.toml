@@ -1,25 +1,23 @@
+
 [project]
 name = "open-access-service"
 authors = [
     { name = "fossilfriend", email = "egreenfest@gmail.com" },
 ]
 description = "Python services and shared libraries supporting the NIAGADS Open Access platform, including genomic data retrieval, annotation, API infrastructure, and data processing."
-license = { text = "GNU GPLv3" }
+license = "GPL-3.0-only"
 readme = "README.md"
 requires-python = ">=3.12,<3.14"
 version = "2.0.0"
 
-[tool.black]
-force-exclude = '(^/development/|/alembic/versions/)'
-
-[tool.isort]
-extend_skip_glob = [
-    "**/alembic/versions/**",
-    "development/**",
-]
-profile = "black"
 
 [tool.poetry]
+homepage = "https://github.com/NIAGADS/open-access-service"
+repository = "https://github.com/NIAGADS/open-access-service"
+include = [
+    { path = "bases/niagads/genomicsdb_etl/plugins/validation_schemas/*.json" },
+    { path = "bases/niagads/genomicsdb_etl/plugins/validation_schemas/*.xsd" },
+]
 packages = [
     { include = "niagads/genomicsdb_etl", from = "bases" },
     { include = "niagads/metadata_validator_tool", from = "bases" },
@@ -63,65 +61,29 @@ packages = [
     { include = "niagads/vep_json_parser", from = "components" },
 ]
 
-homepage = "https://github.com/NIAGADS/open-access-service"
-repository = "https://github.com/NIAGADS/open-access-service"
+[tool.poetry.scripts]
 
-include = [
-    { path = "bases/niagads/genomicsdb_etl/plugins/validation_schemas/*.json" },
-    { path = "bases/niagads/genomicsdb_etl/plugins/validation_schemas/*.xsd" },
-]
 
 [tool.poetry.dependencies]
-aiocache = { extras = [
-    "redis",
-], version = "^0.12.3" }
 aiohttp = { extras = [
     "speedups",
 ], version = "^3.11.16" }
-asgi-correlation-id = "^4.3.4"
-asyncpg = "^0.30.0"
 boto3 = "^1.38.36"
-cyvcf2 = "^0.31.1"
 email-validator = "^2.2.0"
-fastapi = "^0.136.3"
-fastapi-cors = "^0.0.6"
-ga4gh-vrs = { extras = [
-    "extras",
-], version = "^2.2.0" }
-hgvs = { git = "https://github.com/NIAGADS/hgvs.git", rev = "NIAGADS" }
-itsdangerous = "^2.2.0"
+httpx = "^0.28.1"
 jsonschema = "^4.23.0"
 lxml = "^6.0.2"
-nh3 = "^0.2.21"
 openpyxl = "^3.1.5"
-oxrdflib = "^0.5.0"
 pandas = "^2.2.3"
-pgvector = "^0.4.2"
 psutil = "^7.1.0"
-psycopg2-binary = "^2.9.11"
 pydantic = "^2.11.1"
 pydantic-settings = "^2.8.1"
 pyparsing = "^3.2.3"
-pysam = "^0.23.0"
 python-dateutil = "^2.9.0.post0"
-pyyaml = "^6.0.2"
-rdflib = "^7.1.4"
 requests = "^2.32.3"
-sentence-transformers = "^5.2.2"
-slowapi = "^0.1.9"
-spacy = "^3.8.11"
-sqlalchemy = { version = "^2.0.40", extras = [
-    'asyncio',
-] }
-sqlalchemy-utils = "^0.43.0"
-starlette = "^1.2.0"
-streamlit = "^1.55.0"
 strenum = "^0.4.15"
-transformers = "4.56.2"
 typing-extensions = "^4.13.2"
-uvicorn = "^0.34.2"
-vcfpy = "^0.13.8"
-wtforms = "^3.2.1"
+
 
 [tool.poetry.group.dev.dependencies]
 black = "^26.5.1"
@@ -133,39 +95,81 @@ mypy = "^1.8.0"
 pydocstyle = "^6.3.0"
 pytest = "^8.2.2"
 
-[tool.poetry.group.ask]
+[tool.poetry.group.agents]
 optional = true
 
-[tool.poetry.group.ask.dependencies]
-httpx = "^0.28.1"
+[tool.poetry.group.agents.dependencies]
+pydantic-ai-slim = { version = "2.57.0", extras = ["openrouter", "ui"] }
+logfire = { version = "5.2.0", extras = ["fastapi", "httpx"] }
 
-[tool.poetry.group.ask.dependencies.pydantic-ai-slim]
-version = "2.57.0"
-extras = [
-    "openrouter",
-    "ui",
-]
+[tool.poetry.group.api]
+optional = true
 
-[tool.poetry.group.ask.dependencies.logfire]
-version = "5.2.0"
-extras = [
-    "fastapi",
-    "httpx",
-]
-[tool.poetry.scripts]
-migrate-gwas = "niagads.genomicsdb_etl.data_migration.migrate_legacy_gwas_to_hipFG_standard:main"
-runpipe = "niagads.pipeline_service.runners.core:run_main"
-runpipe-export = "niagads.pipeline_service.runners.export_data:run_main"
-runpipe-plugin = "niagads.pipeline_service.runners.plugin:run_main"
-runpipe-xdb-lookup = "niagads.pipeline_service.runners.xdbref_lookup:run_main"
+[tool.poetry.group.api.dependencies]
+aiocache = { version = "^0.12.3", extras = ["redis"] }
+asgi-correlation-id = "^4.3.4"
+fastapi = "^0.136.3"
+fastapi-cors = "^0.0.6"
+itsdangerous = "^2.2.0"
+nh3 = "^0.2.21"
+pyyaml = "^6.0.2"
+slowapi = "^0.1.9"
+starlette = "^1.2.0"
+uvicorn = "^0.35.0"
+fastmcp = "^4.2.5"
 
-[tool.pytest.ini_options]
-addopts = "-vv"
+[tool.poetry.group.postgres]
+optional = true
 
-[tool.tomlsort]
-all = true
-in_place = true
-spaces_indent_inline_array = 4
+[tool.poetry.group.postgres.dependencies]
+asyncpg = "^0.30.0"
+pgvector = "^0.4.2"
+psycopg2-binary = "^2.9.11"
+sqlalchemy = { version = "^2.0.40", extras = ["asyncio"] }
+sqlalchemy-utils = "^0.43.0"
+
+[tool.poetry.group.nlp]
+optional = true
+
+[tool.poetry.group.nlp.dependencies]
+sentence-transformers = "^5.2.2"
+spacy = "^3.8.11"
+# Pinned this version for compatibility with the LFM2.5 embedding model.
+transformers = "4.56.2"
+
+[tool.poetry.group.rdf]
+optional = true
+
+[tool.poetry.group.rdf.dependencies]
+oxrdflib = "^0.5.0"
+rdflib = "^7.1.4"
+
+[tool.poetry.group.streamlit]
+optional = true
+
+[tool.poetry.group.streamlit.dependencies]
+streamlit = "^1.55.0"
+wtforms = "^3.2.1"
+
+[tool.poetry.group.variants]
+optional = true
+
+[tool.poetry.group.variants.dependencies]
+cyvcf2 = "^0.31.1"
+ga4gh-vrs = { version = "^2.2.0", extras = ["extras"] }
+hgvs = { git = "https://github.com/NIAGADS/hgvs.git", rev = "NIAGADS" }
+pysam = "^0.23.0"
+vcfpy = "^0.13.8"
+
+[tool.poetry.group.genomicsdb-etl]
+optional = true
+include-groups = ["postgres", "rdf", "nlp", "variants"]
+
+[tool.poetry.group.oa-api]
+optional = true
+include-groups = ["api", "postgres", "agents"]
+
+
 
 [tool.polylith.bricks]
 "bases/niagads/genomicsdb_etl" = "niagads/genomicsdb_etl"
@@ -208,11 +212,16 @@ spaces_indent_inline_array = 4
 "components/niagads/utils" = "niagads/utils"
 "components/niagads/vcf" = "niagads/vcf"
 "components/niagads/vep_json_parser" = "niagads/vep_json_parser"
+
+[tool.pytest.ini_options]
+addopts = "-vv"
+
+
+
 [build-system]
 build-backend = "poetry.core.masonry.api"
 requires = [
     "poetry-core>=2.0.0,<3.0.0",
 ]
 
-# Pinned this version for compatibility with the LFM2.5 embedding model.
-# transformers = "4.56.2"
+

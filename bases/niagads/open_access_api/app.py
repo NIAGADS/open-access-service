@@ -9,9 +9,8 @@ from niagads.api.common.app.factory import AppFactory
 from niagads.api.common.app.types import AppMetadata
 from niagads.api.common.config import Settings
 from niagads.database.genomicsdb.intervals import fetch_bin_index_reference
-from niagads.open_access_api.ask.telemetry import configure_telemetry
-from niagads.open_access_api.ask.transport import router as AskRouter
 from niagads.open_access_api.dependencies import OpenAccessEndpointContext
+from niagads.open_access_api.mcp import configure_mcp
 from niagads.open_access_api.routes.query import router as QueryRouter
 from niagads.open_access_api.routes.records.gene import router as GeneRecordRouter
 from niagads.open_access_api.routes.records.region import router as RegionRecordRouter
@@ -19,6 +18,9 @@ from niagads.open_access_api.routes.records.track import router as TrackRecordRo
 from niagads.open_access_api.routes.records.variant import router as VariantRecordRouter
 from niagads.open_access_api.routes.service import router as ServiceRouter
 from niagads.settings.core import ServiceEnvironment, get_service_environment
+
+# from niagads.open_access_api.ask.transport import router as AskRouter
+# from niagads.open_access_api.ask.telemetry import configure_telemetry
 
 description_md_path = Path(__file__).resolve().parent / "data" / "api_description.md"
 description = description_md_path.read_text(encoding="utf-8")
@@ -73,10 +75,11 @@ app_factory.add_router(VariantRecordRouter)
 app_factory.add_router(QueryRouter)
 app_factory.add_router(RegionRecordRouter)
 app_factory.add_router(ServiceRouter, rate_limit_exempt=True)
-# app_factory.add_router(AskRouter, rate_limit_exempt=True)
 
-# get the application object
 app = app_factory.app
+
+# initialize and add MCP server
+configure_mcp(app)
 
 
 @app.get("/", include_in_schema=False)
@@ -89,7 +92,9 @@ async def root() -> dict[str, str | None]:
     }
 
 
-configure_telemetry(app)
+# OBSOLETE -> ASK
+# app_factory.add_router(AskRouter, rate_limit_exempt=True)
+# configure_telemetry(app)
 
 if __name__ == "__main__":
     uvicorn.run(app="app:app")

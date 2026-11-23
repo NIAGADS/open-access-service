@@ -14,6 +14,12 @@
   * client-side: SSO & request/assign API token (two classes: trusted application & generic approved registered user)
   * server-side: apply tokens to rate limits
   * qualify rate limits based on anonymous v token
+* mcp
+  * client-side documentation (available tools)
+  * add caching middleware for tools that bypass API, looking to using existing caching infrastructure/database
+  * add middleware for logging and/or integrate logfire
+  * add rate limits (FastMCP middleware) for non-api tools
+  * determine timeout standards
 
 ## ASK NIAGADS alpha
 

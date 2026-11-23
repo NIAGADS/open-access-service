@@ -6,10 +6,7 @@ from niagads.common.reference.ontologies.models import OntologyTerm
 from niagads.common.track.models.curation import CurationEvent
 from niagads.common.track.models.experiment import ExperimentalDesign
 from niagads.common.track.models.phenotypes import Phenotype, PhenotypeCount
-from niagads.common.track.models.provenance import (
-    FileProperties,
-    Provenance,
-)
+from niagads.common.track.models.provenance import FileProperties, Provenance
 from niagads.common.track.models.samples import BiosampleCharacteristics
 from niagads.genome_reference.human import GenomeBuild, HumanGenome
 from pydantic import Field

@@ -16,9 +16,7 @@ from psycopg2 import DatabaseError
 from psycopg2 import connect as db_connect
 from psycopg2.extensions import QueryCanceledError
 from psycopg2.extras import DictCursor, RealDictCursor
-from psycopg2.pool import (
-    SimpleConnectionPool,
-)
+from psycopg2.pool import SimpleConnectionPool
 from psycopg2.pool import ThreadedConnectionPool as _ThreadedConnectionPool
 
 

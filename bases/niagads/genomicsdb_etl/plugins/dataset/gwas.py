@@ -31,10 +31,7 @@ from niagads.database.genomicsdb.schema.ragdoc.chunks import (
 from niagads.database.genomicsdb.schema.results.associations import VariantAssociation
 from niagads.database.genomicsdb.schema.variant.documents import Variant
 from niagads.etl.plugins.metadata import PluginMetadata
-from niagads.etl.plugins.parameters import (
-    GA4GHParamMixin,
-    PathValidatorParamMixin,
-)
+from niagads.etl.plugins.parameters import GA4GHParamMixin, PathValidatorParamMixin
 from niagads.etl.plugins.registry import PluginRegistry
 from niagads.etl.plugins.types import ETLLoadStrategy
 from niagads.ga4gh.annotators import PrimaryKeyGenerator

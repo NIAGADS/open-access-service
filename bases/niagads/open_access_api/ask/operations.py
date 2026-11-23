@@ -1,8 +1,6 @@
 """Supported ASK operations and their existing API response configurations."""
 
-from niagads.api.common.models.annotations.associations import (
-    VariantAssociation,
-)
+from niagads.api.common.models.annotations.associations import VariantAssociation
 from niagads.api.common.models.context.response import ResponseConfiguration
 from niagads.api.common.models.entities.gene.records import Gene, GeneBrief
 from niagads.api.common.models.entities.track.records import TrackMetadataBrief
