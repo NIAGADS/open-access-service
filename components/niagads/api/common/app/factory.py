@@ -31,7 +31,7 @@ def rate_limit_key(request: Request) -> str:
         - registered (trusted apps, approved token) - token
         - mcp_client_id: forwarded client id or token
 
-    # TODO: token support
+    # TODO: token support - identify must be derived from validated token (not token itself)
     """
     client_id = getattr(request.state, "mcp_client_id", None)
     if client_id:

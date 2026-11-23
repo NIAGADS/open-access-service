@@ -6,38 +6,72 @@ Internal development guidance for `open-access-service`, the NIAGADS Python mono
 
 - Python 3.12+ (the original project requirement is `>3.12, <4.0`; consult the root `pyproject.toml` for the authoritative constraint)
 - [pipx](https://github.com/pypa/pipx)
-- [Poetry](https://python-poetry.org/), installed through pipx
+- [Poetry](https://python-poetry.org/) 2.3.x, installed through pipx
 - [Python Polylith tools](https://davidvujic.github.io/python-polylith-docs/), installed as Poetry plugins
-- [toml-sort](https://pypi.org/project/toml-sort/), installed through pipx
 
 ## Environment Setup
 
-Install pipx and Poetry using their linked documentation. Add the Polylith plugins to Poetry:
+Install pipx and Poetry follow official documentation. Add the Polylith plugins to Poetry:
 
 ```bash
 poetry self add poetry-multiproject-plugin
 poetry self add poetry-polylith-plugin
 ```
 
-Clone the renamed repository and install dependencies from its root:
+Clone the repository and install dependencies from its root. If working on a specific branch, check it out before installing:
 
 ```bash
 git clone https://github.com/NIAGADS/open-access-service.git
 cd open-access-service
+poetry env use python3.12
 poetry install
 ```
 
-### Open Access API / ASK Development
+Run all development commands from the repository root using `poetry run` and the root `.venv/`. Do not initialize separate environments or install dependencies under `projects/`, `bases/`, or `components/`. Building individual Polylith projects is a separate step, not part of environment setup.
 
-The Open Access API's ASK functionality uses the optional `ask` dependency group. Contributors working on that API must install it explicitly:
+### Dependency Groups and Application Bundles
+
+Plain `poetry install` installs the shared main dependencies and the non-optional `dev` group. Application dependencies are optional and must be selected with `--with`.
+
+Use the application bundles for service development:
+
+| Bundle | Included groups | Install command |
+| --- | --- | --- |
+| `oa-api` | `api`, `postgres`, `agents` | `poetry install --with oa-api` |
+| `genomicsdb-etl` | `postgres`, `rdf`, `nlp`, `variants` | `poetry install --with genomicsdb-etl` |
+
+For example for work on the Open Access API:
 
 ```bash
-poetry install --with ask
+poetry install --with oa-api
 ```
 
-This installs ASK dependencies including Pydantic AI, Logfire, and Open  Telemetry
+The individual optional groups can also be selected independently:
 
-If working on a specific branch, check it out before running `poetry install`.
+| Group | Dependencies |
+| --- | --- |
+| `agents` | Pydantic AI and Logfire |
+| `api` | FastAPI, Starlette, Uvicorn, CORS, caching, rate limiting, request correlation, session signing, text sanitization, and YAML output |
+| `postgres` | PostgreSQL drivers, pgvector, SQLAlchemy with async support, and SQLAlchemy utilities |
+| `nlp` | sentence-transformers, spaCy, and transformers |
+| `rdf` | oxrdflib and rdflib |
+| `streamlit` | Streamlit and WTForms |
+| `variants` | cyvcf2, ga4gh-vrs, hgvs, pysam, and vcfpy |
+
+For example, install just the API and PostgreSQL groups, or add Streamlit to the ETL bundle:
+
+```bash
+poetry install --with api,postgres
+poetry install --with genomicsdb-etl,streamlit
+```
+
+To install every group:
+
+```bash
+poetry install --all-groups
+```
+
+The former `ask` group is now named `agents`; the `oa-api` bundle includes it.
 
 ## Polylith Architecture
 
@@ -108,7 +142,7 @@ dependencies = [
 The root Poetry configuration expresses the same requirement as:
 
 ```toml
-[tool.poetry.dependencies]
+[tool.poetry.group.postgres.dependencies]
 sqlalchemy = { version = "^2.0.40", extras = ["asyncio"] }
 ```
 
