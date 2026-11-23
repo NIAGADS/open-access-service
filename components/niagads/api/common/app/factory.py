@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.routing import APIRoute
 from niagads.api.common.app.types import AppMetadata
 from niagads.api.common.config import Settings
+from niagads.api.common.constants import RESPONSES
 from niagads.api.common.exception_handlers import (
     add_database_exception_handler,
     add_not_implemented_exception_handler,
@@ -149,7 +150,16 @@ class AppFactory(ComponentBaseMixin):
             for endpoint_route in route.routes:
                 if isinstance(endpoint_route, APIRoute):
                     self._limiter.exempt(endpoint_route.endpoint)
-        self._app.include_router(route, include_in_schema=include_in_schema, **kwargs)
+        self._app.include_router(
+            route,
+            include_in_schema=include_in_schema,
+            responses=(
+                {code: response for code, response in RESPONSES.items() if code != 429}
+                if rate_limit_exempt
+                else RESPONSES
+            ),
+            **kwargs,
+        )
 
     def _add_exception_handlers(self):
         """Adds exception handlers to the application"""
