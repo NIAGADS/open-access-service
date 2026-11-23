@@ -8,7 +8,7 @@ The API is freely accessible for research, educational, and computational purpos
 
 ## Attribution and Citation
 
-Users are encouraged to acknowledge NIAGADS Open Access and cite the original publications, datasets, and resources associated with the data they use. Where available, dataset-specific citation and attribution requirements should be followed.
+Users are required to acknowledge NIAGADS Open Access and cite the original publications, datasets, and resources associated with the data they use. Where available, dataset-specific citation and attribution requirements should be followed.  For details on how to cite this and other NIAGADS Open Access Resources, see our [FAQ](https://niagads.scrollhelp.site/support/acknowledging-and-citing-niagads-and-datasets#Citing-NIAGADS-Open-Access-Resources).
 
 ## Responsible Use
 
@@ -16,7 +16,7 @@ Users are expected to access the API responsibly and avoid activities that compr
 
 ## Data Use and Licensing
 
-Data accessible through the API may originate from multiple contributing studies, repositories, and external resources. Individual datasets may be subject to separate licenses, attribution requirements, or usage conditions. Users are responsible for complying with those conditions.
+Data accessible through the API may originate from multiple contributing studies, repositories, and external resources. Individual datasets may be subject to separate licenses, attribution requirements, or usage conditions. Users are responsible for complying with those conditions.  NIAGADS Open Access Resources are made available under the [Creative Commons Attribution 4.0 International (CC BY 4.0) license](https://creativecommons.org/licenses/by/4.0/legalcode.en).  For full details see our [FAQ](https://niagads.scrollhelp.site/support/policies-and-guidelines).
 
 The availability of data through the API does not supersede any applicable dataset-specific terms.
 
