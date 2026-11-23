@@ -8,6 +8,7 @@ from pydantic import Field, SecretStr
 class Settings(CustomSettings):
     DATABASE_URI: str  # application db (e.g., GenomicsDB or FILER metadata cache)
     CACHE_DB_URI: str  # in memory cache db
+    API_RATE_LIMIT: str = "120/minute"
 
     API_PUBLIC_URL: str = "http://localhost:8000"  # public facing URL for the API
 
@@ -24,8 +25,8 @@ class Settings(CustomSettings):
 
     MAX_SPAN_SIZE: int = 50000
 
-    API_VERSION: Optional[str] = "0.0.1"
-    SUPPORT_EMAIL: str = "betatesting@niagads.org"
+    API_VERSION: Optional[str] = "2.0.0"
+    SUPPORT_EMAIL: str = "help@niagads.org"
 
     LTS: bool = True
 

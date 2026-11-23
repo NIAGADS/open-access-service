@@ -108,6 +108,7 @@ pyyaml = "^6.0.2"
 rdflib = "^7.1.4"
 requests = "^2.32.3"
 sentence-transformers = "^5.2.2"
+slowapi = "^0.1.9"
 spacy = "^3.8.11"
 sqlalchemy = { version = "^2.0.40", extras = [
     'asyncio',
