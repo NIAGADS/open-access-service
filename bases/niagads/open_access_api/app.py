@@ -1,6 +1,7 @@
 import logging
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 import uvicorn
 from fastapi import FastAPI
@@ -18,8 +19,6 @@ from niagads.open_access_api.routes.records.track import router as TrackRecordRo
 from niagads.open_access_api.routes.records.variant import router as VariantRecordRouter
 from niagads.open_access_api.routes.service import router as ServiceRouter
 from niagads.settings.core import ServiceEnvironment, get_service_environment
-
-from pathlib import Path
 
 description_md_path = Path(__file__).resolve().parent / "data" / "api_description.md"
 description = description_md_path.read_text(encoding="utf-8")
