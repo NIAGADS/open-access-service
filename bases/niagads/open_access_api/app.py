@@ -3,15 +3,14 @@ from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from niagads.open_access_api.mcp import configure_mcp
 import uvicorn
 from fastapi import FastAPI
-
 from niagads.api.common.app.factory import AppFactory
 from niagads.api.common.app.types import AppMetadata
 from niagads.api.common.config import Settings
 from niagads.database.genomicsdb.intervals import fetch_bin_index_reference
 from niagads.open_access_api.dependencies import OpenAccessEndpointContext
+from niagads.open_access_api.mcp import configure_mcp
 from niagads.open_access_api.routes.query import router as QueryRouter
 from niagads.open_access_api.routes.records.gene import router as GeneRecordRouter
 from niagads.open_access_api.routes.records.region import router as RegionRecordRouter

@@ -2,9 +2,7 @@ from ast import literal_eval
 from typing import Any, List, Optional, Union
 
 from niagads.api.common.models.records.mixins import ORMCompatabileMixin
-from niagads.api.common.models.records.types import (
-    ORMCompatibleRecord,
-)
+from niagads.api.common.models.records.types import ORMCompatibleRecord
 from niagads.common.genomic.features.models import GenomicFeatureType
 from niagads.common.track.models import TrackRecord
 from niagads.genome_reference.human import GenomeBuild

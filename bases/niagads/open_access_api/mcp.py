@@ -2,9 +2,7 @@ from fastapi import FastAPI, Request
 from fastmcp import FastMCP
 from fastmcp.utilities.lifespan import combine_lifespans
 from niagads.open_access_api.constants import EBI_OLS_MCP_URL
-from niagads.open_access_api.mcp_tools.ontology import (
-    add_ols_ontology_search,
-)
+from niagads.open_access_api.mcp_tools.ontology import add_ols_ontology_search
 from slowapi.util import get_remote_address
 
 

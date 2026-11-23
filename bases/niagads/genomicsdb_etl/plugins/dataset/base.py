@@ -19,18 +19,13 @@ from niagads.database.genomicsdb.schema.ragdoc.types import RAGDocType
 from niagads.database.genomicsdb.schema.reference.ontology import (
     OntologyTerm as DBOntologyTerm,
 )
-from niagads.database.genomicsdb.schema.reference.ontology import (
-    OntologyTermValidation,
-)
+from niagads.database.genomicsdb.schema.reference.ontology import OntologyTermValidation
 from niagads.etl.plugins.base import AbstractBasePlugin
 from niagads.etl.plugins.mixins import (
     EmbeddingGeneratorContextMixin,
     ExternalDatabaseContextMixin,
 )
-from niagads.etl.plugins.parameters import (
-    BasePluginParams,
-    EmbeddingParameterMixin,
-)
+from niagads.etl.plugins.parameters import BasePluginParams, EmbeddingParameterMixin
 from niagads.etl.plugins.types import ResumeCheckpoint
 from niagads.genomicsdb_etl.plugins.common.mixins.parameters import (
     ExternalDatabaseRefParamMixin,

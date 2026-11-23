@@ -11,10 +11,7 @@ from niagads.database.genomicsdb.schema.reference.externaldb import ExternalData
 from niagads.database.genomicsdb.schema.reference.ontology import OntologyTerm
 from niagads.etl.plugins.base import AbstractBasePlugin
 from niagads.etl.plugins.metadata import PluginMetadata
-from niagads.etl.plugins.parameters import (
-    BasePluginParams,
-    PathValidatorParamMixin,
-)
+from niagads.etl.plugins.parameters import BasePluginParams, PathValidatorParamMixin
 from niagads.etl.plugins.registry import PluginRegistry
 from niagads.etl.plugins.types import ETLLoadStrategy
 from niagads.utils.string import matches

@@ -5,12 +5,7 @@ from niagads.common.models.base import CustomBaseModel
 from niagads.common.search.types import MatchType
 from niagads.common.types import Entity
 from niagads.enums.core import CaseInsensitiveEnum
-from pydantic import (
-    Field,
-    FieldSerializationInfo,
-    field_serializer,
-    model_validator,
-)
+from pydantic import Field, FieldSerializationInfo, field_serializer, model_validator
 
 
 class MatchedRecordDetails(CustomBaseModel):

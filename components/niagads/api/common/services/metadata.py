@@ -5,11 +5,7 @@ from fastapi import HTTPException
 from niagads.api.common.constants import SHARD_PATTERN
 from niagads.api.common.models.context.request import RequestDetails
 from niagads.api.common.types import ResponseContent
-from niagads.common.track.models import (
-    ExperimentalDesign,
-    Phenotype,
-    Provenance,
-)
+from niagads.common.track.models import ExperimentalDesign, Phenotype, Provenance
 from niagads.database.genomicsdb.schema.dataset.collection import (
     Collection,
     TrackCollectionLink,

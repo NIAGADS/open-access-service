@@ -13,11 +13,7 @@ from niagads.etl.pipeline.config import PipelineSettings
 from niagads.etl.plugins.logger import ETLLogger
 from niagads.etl.plugins.metadata import PluginMetadata
 from niagads.etl.plugins.parameters import BasePluginParams
-from niagads.etl.plugins.types import (
-    ETLLoadStrategy,
-    ETLRunStatus,
-    ResumeCheckpoint,
-)
+from niagads.etl.plugins.types import ETLLoadStrategy, ETLRunStatus, ResumeCheckpoint
 from niagads.etl.types import ETLExecutionMode
 from niagads.utils.asynchronous import null_async_context
 from niagads.utils.list import chunker

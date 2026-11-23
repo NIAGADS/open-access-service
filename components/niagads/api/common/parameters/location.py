@@ -1,10 +1,7 @@
 from typing import Annotated
 
 from fastapi import Query
-from niagads.api.common.parameters.validators import (
-    sanitize_enum_value,
-    sanitize_value,
-)
+from niagads.api.common.parameters.validators import sanitize_enum_value, sanitize_value
 from niagads.common.genomic.features.models import GenomicFeature
 from niagads.common.genomic.features.types import GenomicFeatureType
 from niagads.exceptions.core import ValidationError

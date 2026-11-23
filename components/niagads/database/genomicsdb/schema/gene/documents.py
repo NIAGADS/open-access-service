@@ -29,14 +29,7 @@ from niagads.database.genomicsdb.schema.ragdoc.chunks import (
 )
 from niagads.database.genomicsdb.schema.ragdoc.types import GeneDocumentSection
 from niagads.database.mixins import GenomicRegionMixin
-from sqlalchemy import (
-    String,
-    and_,
-    func,
-    literal,
-    select,
-    union,
-)
+from sqlalchemy import String, and_, func, literal, select, union
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, mapped_column

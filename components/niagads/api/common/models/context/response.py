@@ -2,11 +2,7 @@ from typing import Any, Optional
 
 from niagads.api.common.models.records.types import RecordT
 from niagads.api.common.models.responses.base import BaseResponseModel
-from niagads.api.common.types import (
-    ResponseContent,
-    ResponseFormat,
-    ResponseUI,
-)
+from niagads.api.common.types import ResponseContent, ResponseFormat, ResponseUI
 from pydantic import BaseModel, field_validator, model_validator
 
 

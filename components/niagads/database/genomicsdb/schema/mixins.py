@@ -1,10 +1,7 @@
 from datetime import datetime
 from typing import Any, Dict, Optional, Sequence, Union
 
-from niagads.common.nlp.embedding.types import (
-    Embedding,
-    EmbeddingFunction,
-)
+from niagads.common.nlp.embedding.types import Embedding, EmbeddingFunction
 from niagads.common.search.models.record import AnnotatedSearchMatch
 from niagads.common.search.types import MatchType
 from niagads.common.types import RecordRetrievalResult
