@@ -16,6 +16,10 @@
   * qualify rate limits based on anonymous v token
 * mcp
   * client-side documentation (available tools)
+  * add caching middleware for tools that bypass API, looking to using existing caching infrastructure/database
+  * add middleware for logging and/or integrate logfire
+  * add rate limits (FastMCP middleware) for non-api tools
+  * determine timeout standards
 
 ## ASK NIAGADS alpha
 
