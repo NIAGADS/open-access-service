@@ -1,6 +1,11 @@
 from fastapi import FastAPI, Request
 from fastmcp import FastMCP
 from fastmcp.utilities.lifespan import combine_lifespans
+from niagads.open_access_api.constants import EBI_OLS_MCP_URL
+from niagads.open_access_api.mcp_tools.ontology import (
+    add_ols_ontology_search,
+    ebi_ols_ontology_search,
+)
 from slowapi.util import get_remote_address
 
 
@@ -39,6 +44,10 @@ def configure_mcp(app: FastAPI) -> None:
     # temp fix: SlowAPI requires a name
     mcp_app.__name__ = "open_access_mcp"
 
+    # add tools
+    add_ols_ontology_search(mcp)
+
+    # add additional lifespan
     app.router.lifespan_context = combine_lifespans(
         app.router.lifespan_context,
         mcp_app.lifespan,
@@ -52,6 +61,8 @@ def configure_mcp(app: FastAPI) -> None:
         methods=["GET", "POST", "DELETE"],
         include_in_schema=False,
     )
+
+    # add rate-limit middleware
     app.middleware("http")(mcp_rate_limit)
 
     # add openapi documentation
