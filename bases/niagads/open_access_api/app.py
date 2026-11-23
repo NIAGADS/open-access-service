@@ -76,7 +76,7 @@ app_factory.add_router(VariantRecordRouter)
 app_factory.add_router(QueryRouter)
 app_factory.add_router(RegionRecordRouter)
 app_factory.add_router(ServiceRouter, rate_limit_exempt=True)
-app_factory.add_router(AskRouter)
+# app_factory.add_router(AskRouter, rate_limit_exempt=True)
 
 # get the application object
 app = app_factory.app
