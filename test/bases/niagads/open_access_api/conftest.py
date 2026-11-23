@@ -7,8 +7,9 @@ from niagads.open_access_api.app import app
 
 
 @pytest.fixture
-def client():
-    with TestClient(app) as test_client:
+def client(request):
+    options = {"client": request.param} if hasattr(request, "param") else {}
+    with TestClient(app, **options) as test_client:
         yield test_client
 
 
