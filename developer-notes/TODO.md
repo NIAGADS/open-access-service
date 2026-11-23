@@ -1,13 +1,19 @@
 # TODOs
 
+## Top Priority
+
+## Developer notes
+
 ## Open Access API
 
-* Add rate limits to all endpoints except `/service` endpoints.
 * Add XML and plain text serializers.
 * Add explicit types for nested dictionaries in API responses, including
   `memberships` and `functional_annotation`, so generated OpenAPI documentation
   describes their structure instead of showing `{"additionalProperty": "anything"}`.
-* generate python and typescript SDKS [design prompt](plans/api-refactor_plan/sdk-prompt.md)
+* rate limits
+  * client-side: SSO & request/assign API token (two classes: trusted application & generic approved registered user)
+  * server-side: apply tokens to rate limits
+  * qualify rate limits based on anonymous v token
 
 ## ASK NIAGADS alpha
 
@@ -109,7 +115,7 @@
   compatibility review. A direct client substitution is insufficient. Discuss
   scope before implementation; this is a candidate refactor, not an approved
   migration.
-* systematically review all function defintions and use `"*, "` before named parameters to enforce using they keywords
+* systematically review all function defintions and use `"*, "` before named parameters to enforce using the keywords
 
 ## ETL
 
@@ -147,25 +153,3 @@ NGENC7VGJXPUQ5  ENCODE  ENCFF078YRQ.bed.gz      3700    728458  IDR thresholded 
 source_id ontology_term_id term term_iri entity_type label definition
 has_component 162250 has component http://purl.obolibrary.org/obo/RO_0002180 OBJECT_PROPERTY has component w 'has component' p if w 'has part' p and w is such that it can be directly disassembled into into n parts p, p2, p3, ..., pn, where these parts are of similar type.
 ```
-
-## Top Priority
-
-## Better VSCode
-
-* Code Actions (e.g., for abstract classes)
-* isort
-
-## Documentation
-
-* use lazydocs instead of sphinx
-  
-## Developer notes
-
-* settings/configuration for `_api` bases; see <https://docs.pydantic.dev/latest/concepts/pydantic_settings/#usage>
-* microservices w/FastAPI - <https://dev.to/paurakhsharma/microservice-in-python-using-fastapi-24cc#using-nginx>
-
-## ASK dashboard follow-up
-
-- Repair table histogram filters separately; numeric and p-value filtering is disabled in ASK dashboard translators for now.
-- Adapt regional Manhattan for association position versus -log10(p), with disease/population grouping; preserve distinctions between p-values and other significance measures.
-- Consider shared parent state for bidirectional filtering between tables and other dashboard panels after the independent-panel first pass.
