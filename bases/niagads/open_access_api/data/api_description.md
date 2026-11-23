@@ -34,11 +34,13 @@ Requests exceeding the applicable limit receive HTTP `429 Too Many Requests`. Th
 
 ## Model Context Protocol (MCP)
 
-The API supports the Model Context Protocol (MCP), enabling AI assistants and agents to discover and access supported API functionality through standardized tools.
+NIAGADS Open Access provides a hosted Model Context Protocol (MCP), enabling AI assistants and agents to discover and access supported API functionality through standardized tools.
 
-### MCP Endpoint
+### MCP Server
 
-`https://api.niagads.org/mcp`
+The MCP server for this instance of the API is found at:
+
+[https://api.niagads.org/api/mcp](https://api.niagads.org/api/mcp)
 
 The MCP server uses Streamable HTTP and exposes supported API endpoints as discoverable tools. No separate MCP credentials are required for publicly accessible endpoints.
 
