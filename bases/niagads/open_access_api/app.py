@@ -6,6 +6,7 @@ import uvicorn
 from fastapi import FastAPI
 from niagads.api.common.app.factory import AppFactory
 from niagads.api.common.app.types import AppMetadata
+from niagads.api.common.config import Settings
 from niagads.database.genomicsdb.intervals import fetch_bin_index_reference
 from niagads.open_access_api.ask.telemetry import configure_telemetry
 from niagads.open_access_api.ask.transport import router as AskRouter
@@ -77,6 +78,17 @@ app_factory.add_router(ServiceRouter, rate_limit_exempt=True)
 
 # get the application object
 app = app_factory.app
+
+
+@app.get("/", include_in_schema=False)
+async def root() -> dict[str, str | None]:
+    settings = Settings.from_env()
+    return {
+        "name": app.title,
+        "documentation": f"{settings.API_PUBLIC_URL.rstrip('/')}/docs",
+        "version": settings.API_VERSION,
+    }
+
 
 configure_telemetry(app)
 
