@@ -4,11 +4,9 @@ import yaml
 from asgi_correlation_id import CorrelationIdMiddleware
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.openapi.utils import get_openapi
 from fastapi.routing import APIRoute
 from niagads.api.common.app.types import AppMetadata
 from niagads.api.common.config import Settings
-from niagads.api.common.constants import RESPONSES
 from niagads.api.common.exception_handlers import (
     add_database_exception_handler,
     add_not_implemented_exception_handler,
@@ -17,7 +15,6 @@ from niagads.api.common.exception_handlers import (
     add_system_exception_handler,
 )
 from niagads.common.core import ComponentBaseMixin
-from niagads.settings.core import ServiceEnvironment, get_service_environment
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
@@ -45,24 +42,9 @@ class AppFactory(ComponentBaseMixin):
             version (bool, optional): add API major  version to path.  Defaults to False
         """
         super().__init__()
-        settings = Settings.from_env()
-        # Accept the existing cache URI while using the standard Redis protocol.
-        cache_uri = settings.CACHE_DB_URI
-        if cache_uri.startswith("keydb://"):
-            cache_uri = cache_uri.replace("keydb://", "redis://", 1)
-        self._limiter = Limiter(
-            key_func=get_remote_address,
-            application_limits=[settings.API_RATE_LIMIT],
-            storage_uri=cache_uri,
-            key_prefix="open-access:ratelimit",
-            strategy="fixed-window",
-            headers_enabled=True,
-            retry_after="delta-seconds",
-            swallow_errors=False,
-            in_memory_fallback_enabled=False,
-        )
+
         self._app: FastAPI = self._initialize_app(metadata, lifespan)
-        self._app.state.limiter = self._limiter
+        self._initialize_rate_limiter()
         self._add_middleware()
         self._add_exception_handlers()
 
@@ -75,6 +57,29 @@ class AppFactory(ComponentBaseMixin):
     def _verify_app(self):
         if not self._app:
             raise RuntimeError("Application is not initialized.")
+
+    def _initialize_rate_limiter(self):
+        settings = Settings.from_env()
+
+        cache_uri = settings.CACHE_DB_URI
+        if cache_uri.startswith("keydb"):
+            cache_uri = cache_uri.replace("keydb", "redis")
+        if cache_uri.startswith("valkey"):
+            cache_uri = cache_uri.replace("valkey", "redis")
+
+        self._limiter = Limiter(
+            key_func=get_remote_address,
+            application_limits=[settings.API_RATE_LIMIT],
+            storage_uri=cache_uri,
+            key_prefix="open-access:ratelimit",
+            strategy="fixed-window",
+            headers_enabled=True,
+            retry_after="delta-seconds",
+            swallow_errors=False,
+            in_memory_fallback_enabled=False,
+        )
+
+        self._app.state.limiter = self._limiter
 
     def _initialize_app(
         self,
