@@ -10,7 +10,8 @@ The API provides access to several complementary categories of genomic informati
 - **Genetic Variants:** Annotated variants, including variants identified through the Alzheimer's Disease Sequencing Project (ADSP).
 - **AD/ADRD Genetic Associations:** Curated AD/ADRD genetic associations and genome-wide association study (GWAS) results.
 - **AD/ADRD GWAS Summary Statistics:** Harmonized association statistics and genomic region-based queries across available GWAS datasets.
-- **Functional Genomics:** Third-party genomic annotations and functional evidence, including regulatory elements, molecular QTLs, and other functional genomics resources.
+- **Functional Genomics:** Third-party genomic annotations and functional evidence, including regulatory elements, molecular QTLs, and other functional genomics resources. **coming soon**
+- **ADSP FunGen xQTLs:** molecular QTLs from the Alzheimer's Disease Sequencing Project (ADSP). **coming soon**
 - **Datasets and Metadata:** Dataset descriptions, identifiers, provenance, and related metadata supporting data discovery and integration.
 
 Endpoints are organized by resource and operation. Refer to the endpoint documentation below for supported queries, parameters, response schemas, and examples.
