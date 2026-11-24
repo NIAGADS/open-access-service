@@ -2,7 +2,9 @@ from fastapi import FastAPI, Request
 from fastmcp import FastMCP
 from fastmcp.utilities.lifespan import combine_lifespans
 from niagads.open_access_api.constants import EBI_OLS_MCP_URL
-from niagads.open_access_api.mcp_tools.ontology import add_ols_ontology_search
+from niagads.open_access_api.mcp_tools.ontology import (
+    add_ols_ontology_search,
+)
 from slowapi.util import get_remote_address
 
 
@@ -19,7 +21,9 @@ async def mcp_rate_limit(request: Request, call_next):
     """
     # TODO: check for an verify access token as alternative id
     if request.url.path.startswith("/mcp"):
-        client_id = get_remote_address(request)
+        client_id = getattr(
+            request.state, "verified_client_ip", None
+        ) or get_remote_address(request)
         request.state.mcp_client_id = client_id
 
     return await call_next(request)

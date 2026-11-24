@@ -1,5 +1,8 @@
+import hashlib
+import hmac
 from io import StringIO
 
+from niagads.api.common.app.middleware import verify_internal_proxy
 import yaml
 from asgi_correlation_id import CorrelationIdMiddleware
 from fastapi import APIRouter, FastAPI, Request
@@ -36,7 +39,11 @@ def rate_limit_key(request: Request) -> str:
     client_id = getattr(request.state, "mcp_client_id", None)
     if client_id:
         return f"mcp:{client_id}"
-    return f"ip:{get_remote_address(request)}"
+
+    client_ip = getattr(
+        request.state, "verified_client_ip", None
+    ) or get_remote_address(request)
+    return f"ip:{client_ip}"
 
 
 class AppFactory(ComponentBaseMixin):
@@ -61,6 +68,9 @@ class AppFactory(ComponentBaseMixin):
         super().__init__()
 
         self._app: FastAPI = self._initialize_app(metadata, lifespan)
+        self._app.state.signing_secret = Settings.from_env().SIGNING_SECRET.encode(
+            "utf-8"
+        )
         self._initialize_rate_limiter()
         self._add_middleware()
         self._add_exception_handlers()

@@ -3,6 +3,7 @@ from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from pathlib import Path
 
+from niagads.api.common.app.middleware import verify_internal_proxy
 import uvicorn
 from fastapi import FastAPI
 from niagads.api.common.app.factory import AppFactory
@@ -80,6 +81,9 @@ app = app_factory.app
 
 # initialize and add MCP server
 configure_mcp(app)
+
+# add proxy verification; needs to run first before mcp middleware
+app.middleware("http")(verify_internal_proxy)
 
 
 @app.get("/", include_in_schema=False)

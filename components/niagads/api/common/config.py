@@ -20,8 +20,7 @@ class Settings(CustomSettings):
 
     IGV_BROWSER_INFO_URL: str = "/record"
 
-    # FIXME: required for correlation middleware; not currently in use
-    SESSION_SECRET: Optional[str] = None
+    SIGNING_SECRET: str
 
     MAX_SPAN_SIZE: int = 50000
 
