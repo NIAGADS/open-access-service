@@ -120,7 +120,7 @@ class AppFactory(ComponentBaseMixin):
             description=metadata.description,
             summary=metadata.summary,
             version=Settings.from_env().API_VERSION or "0.0.1",
-            # terms_of_service= # FIXME: review and add terms of service
+            terms_of_service=metadata.terms_of_service,
             contact={
                 "name": "NIAGADS Support",
                 "email": Settings.from_env().ADMIN_EMAIL,

@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 from niagads.api.common.app.middleware import verify_internal_proxy
+from niagads.open_access_api.constants import TERMS_OF_SERVICE_URL
 import uvicorn
 from fastapi import FastAPI
 from niagads.api.common.app.factory import AppFactory
@@ -23,12 +24,13 @@ from niagads.settings.core import ServiceEnvironment, get_service_environment
 # from niagads.open_access_api.ask.transport import router as AskRouter
 # from niagads.open_access_api.ask.telemetry import configure_telemetry
 
-description_md_path = Path(__file__).resolve().parent / "data" / "api_description.md"
-description = description_md_path.read_text(encoding="utf-8")
+md_path = Path(__file__).resolve().parent / "data" / "api_description.md"
+description = md_path.read_text(encoding="utf-8")
 
 metadata = AppMetadata(
     title="NIAGADS Open Access API",
     description=description,
+    terms_of_service=TERMS_OF_SERVICE_URL,
     summary=(
         "NIAGADS Open Access API for Alzheimer's disease and related dementias "
         "genomic data and annotations."

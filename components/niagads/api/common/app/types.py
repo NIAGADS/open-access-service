@@ -12,4 +12,5 @@ class AppMetadata(BaseModel):
     title: str
     description: str
     summary: str
+    terms_of_service: str
     # servers: list[AppServer]
